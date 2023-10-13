@@ -1,8 +1,12 @@
 type HeaderProps = {
   isLogged: boolean;
+  isLoginScreen?: boolean;
 };
 
-export default function Header({ isLogged }: HeaderProps): JSX.Element {
+export default function Header({
+  isLogged,
+  isLoginScreen,
+}: HeaderProps): JSX.Element {
   return (
     <header className="header">
       <div className="container">
@@ -43,7 +47,10 @@ export default function Header({ isLogged }: HeaderProps): JSX.Element {
           ) : (
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <li className="header__nav-item user">
+                <li
+                  className="header__nav-item user"
+                  style={isLoginScreen ? { display: 'none' } : {}}
+                >
                   <a
                     className="header__nav-link header__nav-link--profile"
                     href="#"

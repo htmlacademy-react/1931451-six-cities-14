@@ -3,8 +3,7 @@ import Header from '../../components/header/header';
 export default function LoginScreen(): JSX.Element {
   return (
     <div className="page page--gray page--login">
-      {/* FIXME: Убрать кнопку Sign in*/}
-      <Header isLogged={false} />
+      <Header isLogged={false} isLoginScreen />
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">

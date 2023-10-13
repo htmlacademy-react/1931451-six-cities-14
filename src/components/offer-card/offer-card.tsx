@@ -1,18 +1,20 @@
 import { OfferType } from '../../types/offers.type';
-import { getRating } from '../../utils/utils';
+import { getPercentRating } from '../../utils/utils';
 
 type OfferCardProps = {
   offer: OfferType;
-}
+};
 
-export default function OfferCard({offer}: OfferCardProps): JSX.Element {
-  const {isPremium, previewImage, price, rating, title, type} = offer;
+export default function OfferCard({ offer }: OfferCardProps): JSX.Element {
+  const { isPremium, previewImage, price, rating, title, type } = offer;
 
   return (
     <article className="cities__card place-card">
-      <div className="place-card__mark">
-        {isPremium && <span>Premium</span>}
-      </div>
+      {isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
           <img
@@ -39,7 +41,7 @@ export default function OfferCard({offer}: OfferCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: getRating(rating) }} />
+            <span style={{ width: getPercentRating(rating) }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
