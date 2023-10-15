@@ -12,3 +12,5 @@ root.render(
     <App offers={offersData} />
   </React.StrictMode>
 );
+
+// FIXME: Исправить все теги <a> на компонент <Link>

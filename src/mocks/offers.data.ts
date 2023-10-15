@@ -274,5 +274,5 @@ export const offersData: OfferType[] = [
       zoom: 16,
     },
     id: 5,
-  },
+  }
 ];

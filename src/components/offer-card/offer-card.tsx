@@ -1,15 +1,25 @@
+import classNames from 'classnames';
 import { OfferType } from '../../types/offers.type';
 import { getPercentRating } from '../../utils/utils';
 
 type OfferCardProps = {
   offer: OfferType;
+  className?: string;
 };
 
-export default function OfferCard({ offer }: OfferCardProps): JSX.Element {
+export default function OfferCard({
+  offer,
+  className,
+}: OfferCardProps): JSX.Element {
   const { isPremium, previewImage, price, rating, title, type } = offer;
 
   return (
-    <article className="cities__card place-card">
+    <article
+      className={classNames({
+        'place-card': true,
+        [className as string]: className, //TODO ВОПРОС: Плохая ли практика передавать html class через пропс?
+      })}
+    >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>

@@ -8,7 +8,7 @@ type OffersListProps = {
 export default function OffersList({offers}: OffersListProps): JSX.Element {
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <OfferCard offer={offer} key={offer.id}/>)}
+      {offers.map((offer) => <OfferCard offer={offer} key={offer.id} className='cities__card' />)}
     </div>
   );
 }

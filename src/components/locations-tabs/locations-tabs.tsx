@@ -4,7 +4,7 @@ export default function LocationsTabs(): JSX.Element {
       <section className="locations container">
         <ul className="locations__list tabs__list">
           <li className="locations__item">
-            <a className="locations__item-link tabs__item" href="#">
+            <a className="locations__item-link tabs__item tabs__item--active" href="#">
               <span>Paris</span>
             </a>
           </li>
@@ -19,7 +19,7 @@ export default function LocationsTabs(): JSX.Element {
             </a>
           </li>
           <li className="locations__item">
-            <a className="locations__item-link tabs__item tabs__item--active">
+            <a className="locations__item-link tabs__item">
               <span>Amsterdam</span>
             </a>
           </li>
