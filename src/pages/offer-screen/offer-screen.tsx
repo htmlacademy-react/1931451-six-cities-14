@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { OfferType } from '../../types/offers.type';
+import { OfferType, UserType } from '../../types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {
   getArraySlice,
@@ -8,22 +8,21 @@ import {
   setCapitalLetter,
 } from '../../utils/utils';
 import { MAX_IMAGES } from './offer-screen.const';
-import { UserType } from '../../types/user.type';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import { Map } from '../../components/map/map';
 import NearPlaces from '../../components/near-places/near-places';
 import { Helmet } from 'react-helmet-async';
+import { useAuthorizationStatus } from '../../hooks';
 
 type OfferScreenProps = {
   offers: OfferType[];
-  isLogged?: boolean;
 };
 
 export default function OfferScreen({
   offers,
-  isLogged,
 }: OfferScreenProps): JSX.Element {
   const params = useParams();
+  const isLogged = useAuthorizationStatus();
   const offer = offers.find((item) => item.id === Number(params.id));
 
   const {

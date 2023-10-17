@@ -1,8 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
+import { Navigate } from 'react-router-dom';
+import { AppRoute } from '../../types';
+import { useAuthorizationStatus } from '../../hooks';
 
 export default function LoginScreen(): JSX.Element {
-  return (
+  const isLogged = useAuthorizationStatus();
+
+  return isLogged ? (
+    <Navigate to={AppRoute.Main} />
+  ) : (
     <div className="page page--gray page--login">
       <Helmet>
         <title>6 Cities: Login</title>

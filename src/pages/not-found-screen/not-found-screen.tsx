@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { AppRoute } from '../../types/app-route.enum';
+import { AppRoute } from '../../types';
 import { citiesBtnStyle, citiesPlacesContainerStyle, citiesStatusDescriptionStyle, citiesStatusStyle } from './not-found-screen.style';
 import { Helmet } from 'react-helmet-async';
 
@@ -8,7 +8,7 @@ export default function NotFoundScreen(): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet>
-        <title>6 Cities: 404</title>
+        <title>6 Cities: 404 Page not found</title>
       </Helmet>
 
       <Header />

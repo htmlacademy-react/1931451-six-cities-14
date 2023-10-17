@@ -18,7 +18,7 @@ export default function FavoritesScreen({
         <title>6 Cities: Favorites</title>
       </Helmet>
 
-      <Header isLogged />
+      <Header />
       {isEmpty ? (
         <main className="page__main page__main--favorites page__main--favorites-empty">
           <div className="page__favorites-container container">

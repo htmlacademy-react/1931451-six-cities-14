@@ -1,4 +1,4 @@
-import { OfferType } from '../../types/offers.type';
+import { OfferType } from '../../types';
 import OfferCard from '../offer-card/offer-card';
 
 type OffersListProps = {

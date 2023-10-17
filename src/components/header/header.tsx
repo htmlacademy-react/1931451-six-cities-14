@@ -1,15 +1,16 @@
 import { Link, NavLink } from 'react-router-dom';
-import { AppRoute } from '../../types/app-route.enum';
+import { AppRoute } from '../../types';
+import { useAuthorizationStatus } from '../../hooks';
 
 type HeaderProps = {
-  isLogged?: boolean;
   isLoginScreen?: boolean;
 };
 
 export default function Header({
-  isLogged,
   isLoginScreen
 }: HeaderProps): JSX.Element {
+  const isLogged = useAuthorizationStatus();
+
   const getStyleForNavLink = ({ isActive }: { isActive: boolean }): object =>
     isActive ? { pointerEvents: 'none' } : {};
 

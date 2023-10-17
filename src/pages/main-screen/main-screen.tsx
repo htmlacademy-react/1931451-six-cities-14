@@ -4,7 +4,7 @@ import LocationsTabs from '../../components/locations-tabs/locations-tabs';
 import { Map } from '../../components/map/map';
 import OffersList from '../../components/offers-list/offers-list';
 import OffersSort from '../../components/offers-sort/offers-sort';
-import { OfferType } from '../../types/offers.type';
+import { OfferType } from '../../types';
 import { Helmet } from 'react-helmet-async';
 
 type MainScreenProps = {
