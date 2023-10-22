@@ -1,4 +1,4 @@
-import { OfferType } from '../types/offers.type';
+import { OfferType } from '../types';
 
 export const offersData: OfferType[] = [
   {
@@ -274,5 +274,5 @@ export const offersData: OfferType[] = [
       zoom: 16,
     },
     id: 5,
-  },
+  }
 ];

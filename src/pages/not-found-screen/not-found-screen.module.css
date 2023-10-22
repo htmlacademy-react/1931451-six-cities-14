@@ -1,0 +1,17 @@
+.container {
+  padding-right: 58px;
+}
+
+.title {
+  font-size: 44px;
+}
+
+.desc {
+  font-size: 22px;
+}
+
+.btn {
+  display: block;
+  margin-top: 10px;
+  color: #417FC5;
+}

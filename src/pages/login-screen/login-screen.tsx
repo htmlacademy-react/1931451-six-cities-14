@@ -1,9 +1,23 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
+import { Navigate } from 'react-router-dom';
+import { AppRoute } from '../../types';
+import { useAuthorizationStatus } from '../../hooks';
+import { checkAuthorizationStatus } from '../../utils/utils';
 
 export default function LoginScreen(): JSX.Element {
-  return (
+  const { authorizationStatus } = useAuthorizationStatus();
+  const isLogged = checkAuthorizationStatus(authorizationStatus);
+
+  return isLogged ? (
+    <Navigate to={AppRoute.Main} />
+  ) : (
     <div className="page page--gray page--login">
-      <Header isLogged={false} isLoginScreen />
+      <Helmet>
+        <title>6 Cities: Login</title>
+      </Helmet>
+
+      <Header isLoginScreen />
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">

@@ -1,18 +1,29 @@
+import { Link, NavLink } from 'react-router-dom';
+import { AppRoute } from '../../types';
+import { useAuthorizationStatus } from '../../hooks';
+import { checkAuthorizationStatus } from '../../utils/utils';
+
 type HeaderProps = {
-  isLogged: boolean;
   isLoginScreen?: boolean;
 };
 
-export default function Header({
-  isLogged,
-  isLoginScreen,
-}: HeaderProps): JSX.Element {
+export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
+  const { authorizationStatus } = useAuthorizationStatus();
+  const isLogged = checkAuthorizationStatus(authorizationStatus);
+
+  const getStyleForNavLink = ({ isActive }: { isActive: boolean }): object =>
+    isActive ? { pointerEvents: 'none' } : {};
+
   return (
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <a className="header__logo-link header__logo-link--active">
+            <NavLink
+              to={AppRoute.Main}
+              className="header__logo-link header__logo-link--active"
+              style={getStyleForNavLink}
+            >
               <img
                 className="header__logo"
                 src="img/logo.svg"
@@ -20,27 +31,28 @@ export default function Header({
                 width={81}
                 height={41}
               />
-            </a>
+            </NavLink>
           </div>
           {isLogged ? (
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
-                  <a
+                  <NavLink
                     className="header__nav-link header__nav-link--profile"
-                    href="#"
+                    to={AppRoute.Favorites}
+                    style={getStyleForNavLink}
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
                       Oliver.conner@gmail.com
                     </span>
                     <span className="header__favorite-count">3</span>
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
+                  <Link to={AppRoute.Main} className="header__nav-link">
                     <span className="header__signout">Sign out</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -51,13 +63,13 @@ export default function Header({
                   className="header__nav-item user"
                   style={isLoginScreen ? { display: 'none' } : {}}
                 >
-                  <a
+                  <Link
                     className="header__nav-link header__nav-link--profile"
-                    href="#"
+                    to={AppRoute.Login}
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__login">Sign in</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>

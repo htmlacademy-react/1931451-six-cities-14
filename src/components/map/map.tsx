@@ -1,7 +1,12 @@
-export default function Map(): JSX.Element {
-  return (
-    <div className="cities__right-section">
-      <section className="cities__map map" />
-    </div>
-  );
-}
+import React from 'react';
+import classNames from 'classnames';
+
+type MapProps = {
+  className?: string;
+};
+
+export const Map: React.FC<MapProps> = ({ className }) => (
+  <section
+    className={classNames('map', [className])}
+  />
+);
