@@ -15,3 +15,5 @@ root.render(
 
 // FIXME: Исправить все теги <a> на компонент <Link>
 // v18.17.1
+
+// FIXME: Provider

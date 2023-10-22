@@ -15,10 +15,7 @@ export default function OfferCard({
 
   return (
     <article
-      className={classNames({
-        'place-card': true,
-        [className as string]: className, //TODO ВОПРОС: Плохая ли практика передавать html class через пропс?
-      })}
+      className={classNames('place-card', [className])}
     >
       {isPremium && (
         <div className="place-card__mark">

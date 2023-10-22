@@ -8,7 +8,6 @@ type FavoritesScreenProps = {
 };
 
 // FIXME: Добавить логику при отсутствующих обьявлениях в избранном, временно передаю пропом
-// FIXME: Подумать над рефакторингом контейнера (через зависимоть classNames)
 export default function FavoritesScreen({
   isEmpty,
 }: FavoritesScreenProps): JSX.Element {

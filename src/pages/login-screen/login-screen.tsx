@@ -3,9 +3,11 @@ import Header from '../../components/header/header';
 import { Navigate } from 'react-router-dom';
 import { AppRoute } from '../../types';
 import { useAuthorizationStatus } from '../../hooks';
+import { checkAuthorizationStatus } from '../../utils/utils';
 
 export default function LoginScreen(): JSX.Element {
-  const isLogged = useAuthorizationStatus();
+  const { authorizationStatus } = useAuthorizationStatus();
+  const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   return isLogged ? (
     <Navigate to={AppRoute.Main} />

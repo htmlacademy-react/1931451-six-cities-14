@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { OfferType, UserType } from '../../types';
+import { OfferType } from '../../types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {
-  getArraySlice,
+  checkAuthorizationStatus,
   getPercentRating,
   setCapitalLetter,
 } from '../../utils/utils';
-import { MAX_IMAGES } from './offer-screen.const';
+import { DEFAULT_BEGIN, MAX_IMAGES_SHOW } from './offer-screen.const';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import { Map } from '../../components/map/map';
 import NearPlaces from '../../components/near-places/near-places';
@@ -22,7 +22,8 @@ export default function OfferScreen({
   offers,
 }: OfferScreenProps): JSX.Element {
   const params = useParams();
-  const isLogged = useAuthorizationStatus();
+  const { authorizationStatus } = useAuthorizationStatus();
+  const isLogged = checkAuthorizationStatus(authorizationStatus);
   const offer = offers.find((item) => item.id === Number(params.id));
 
   const {
@@ -35,10 +36,10 @@ export default function OfferScreen({
     maxAdults,
     price,
     goods,
-    description,
-  } = offer as OfferType; //TODO Прошу проверить данную строчку, так как без константного утверждения деструктуризация не работает
+    description
+  } = offer ?? {};
 
-  const { avatarUrl, name, isPro } = offer?.host as UserType;
+  const { avatarUrl, name, isPro } = offer?.host ?? {};
 
   return offer ? (
     <div className="page">
@@ -51,7 +52,7 @@ export default function OfferScreen({
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {getArraySlice(images, MAX_IMAGES).map((image) => (
+              {images?.slice(DEFAULT_BEGIN, Math.min(MAX_IMAGES_SHOW, images.length)).map((image) => (
                 <div className="offer__image-wrapper" key={image}>
                   <img
                     className="offer__image"
@@ -105,7 +106,7 @@ export default function OfferScreen({
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {goods.map((item) => (
+                  {goods?.map((item) => (
                     <li className="offer__inside-item" key={item}>
                       {item}
                     </li>

@@ -20,9 +20,8 @@ export default function MainScreen({ offers }: MainScreenProps): JSX.Element {
 
       <Header />
       <main
-        className={classNames({
-          'page__main--index': true,
-          'page__main--index-empty': Boolean(!offers.length),
+        className={classNames('page__main--index', {
+          'page__main--index-empty': Boolean(!offers.length), // TODO: Прошу проверить данную строчку
         })}
       >
         <h1 className="visually-hidden">Cities</h1>

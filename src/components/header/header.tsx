@@ -1,15 +1,15 @@
 import { Link, NavLink } from 'react-router-dom';
 import { AppRoute } from '../../types';
 import { useAuthorizationStatus } from '../../hooks';
+import { checkAuthorizationStatus } from '../../utils/utils';
 
 type HeaderProps = {
   isLoginScreen?: boolean;
 };
 
-export default function Header({
-  isLoginScreen
-}: HeaderProps): JSX.Element {
-  const isLogged = useAuthorizationStatus();
+export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
+  const { authorizationStatus } = useAuthorizationStatus();
+  const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   const getStyleForNavLink = ({ isActive }: { isActive: boolean }): object =>
     isActive ? { pointerEvents: 'none' } : {};
@@ -50,9 +50,9 @@ export default function Header({
                   </NavLink>
                 </li>
                 <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
+                  <Link to={AppRoute.Main} className="header__nav-link">
                     <span className="header__signout">Sign out</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>

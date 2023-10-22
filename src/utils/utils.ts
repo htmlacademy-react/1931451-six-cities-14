@@ -1,9 +1,20 @@
-import { DEFAULT_BEGIN, MAX_PERCENT, MAX_RATING } from '../const';
+import { MAX_PERCENT, MAX_RATING, MIN_PERCENT } from '../const';
+import { AuthorizationStatus, AuthorizationStatusType } from '../types';
 
-export const getPercentRating = (value: number): string =>
-  `${(MAX_PERCENT * value) / MAX_RATING}%`;
+const isNumber = (num: number | undefined): num is number =>
+  typeof num === 'number';
 
-export const getArraySlice = <T = string> (arr: T[], endSlice: number, beginSlice: number = DEFAULT_BEGIN): T[] =>
-  arr.slice(beginSlice, Math.min(endSlice, arr.length));
+const isString = (str: string | undefined): str is string =>
+  typeof str === 'string';
 
-export const setCapitalLetter = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);
+export const getPercentRating = (value: number | undefined): string =>
+  isNumber(value)
+    ? `${(MAX_PERCENT * value) / MAX_RATING}%`
+    : `${MIN_PERCENT}%`;
+
+export const setCapitalLetter = (str: string | undefined): string =>
+  isString(str)
+    ? str.charAt(0).toUpperCase() + str.slice(1)
+    : '';
+
+export const checkAuthorizationStatus = (status: AuthorizationStatusType): boolean => status === AuthorizationStatus.Auth;
