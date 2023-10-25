@@ -1,55 +1,49 @@
-import classNames from 'classnames';
-import { AppRoute, OfferType } from '../../types';
-import { getPercentRating } from '../../utils/utils';
 import { Link } from 'react-router-dom';
+import { AppRoute, OfferType } from '../../../types';
+import { getPercentRating } from '../../../utils/utils';
 
-type OfferCardProps = {
+type FavoritesCardProps = {
   offer: OfferType;
-  onActiveOffer?: (offer: OfferType) => void;
-  className?: string;
 };
 
-export default function OfferCard({
+export default function FavoritesCard({
   offer,
-  className,
-  onActiveOffer,
-}: OfferCardProps): JSX.Element {
+}: FavoritesCardProps): JSX.Element {
   const { isPremium, previewImage, price, rating, title, type, id } = offer;
   const path = AppRoute.Offer.replace(':id', String(id));
 
   return (
-    <article
-      className={classNames('place-card', className)}
-      onMouseEnter={() => onActiveOffer && onActiveOffer(offer)}
-    >
+    <article className="favorites__card place-card" id={offer.city.name}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className="favorites__image-wrapper place-card__image-wrapper">
         <Link to={path}>
           <img
             className="place-card__image"
             src={previewImage}
-            width={260}
-            height={200}
+            width={150}
+            height={110}
             alt="Place image"
           />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
-            {/*FIXME класс для активной кнопки place-card__bookmark-button--active */}
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            type="button"
+          >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
             </svg>
-            <span className="visually-hidden">To bookmarks</span>
+            <span className="visually-hidden">In bookmarks</span>
           </button>
         </div>
         <div className="place-card__rating rating">

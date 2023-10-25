@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { AppRoute } from '../../types';
+import { AppRoute, AuthorizationStatus } from '../../types';
 import { useAuthorizationStatus } from '../../hooks';
 import { checkAuthorizationStatus } from '../../utils/utils';
 
@@ -7,12 +7,20 @@ type HeaderProps = {
   isLoginScreen?: boolean;
 };
 
-export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
-  const { authorizationStatus } = useAuthorizationStatus();
+// FIXME: Если пользователь находится не на приватном маршруте, то не перекидывать его на главную страницу при Sign out
+export default function Header({
+  isLoginScreen,
+}: HeaderProps): JSX.Element {
+  const { authorizationStatus, setAuthorizationStatus } = useAuthorizationStatus();
   const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   const getStyleForNavLink = ({ isActive }: { isActive: boolean }): object =>
     isActive ? { pointerEvents: 'none' } : {};
+
+  const handleClick = () => {
+    setAuthorizationStatus(AuthorizationStatus.NoAuth);
+    localStorage.clear();
+  };
 
   return (
     <header className="header">
@@ -46,11 +54,15 @@ export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
                     <span className="header__user-name user__name">
                       Oliver.conner@gmail.com
                     </span>
-                    <span className="header__favorite-count">3</span>
+                    <span className="header__favorite-count">5</span>
                   </NavLink>
                 </li>
                 <li className="header__nav-item">
-                  <Link to={AppRoute.Main} className="header__nav-link">
+                  <Link
+                    onClick={handleClick}
+                    to={AppRoute.Main}
+                    className="header__nav-link"
+                  >
                     <span className="header__signout">Sign out</span>
                   </Link>
                 </li>
