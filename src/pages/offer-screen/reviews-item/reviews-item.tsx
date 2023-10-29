@@ -11,8 +11,6 @@ export default function ReviewsItem({ review }: ReviewsItemProps): JSX.Element {
   const { rating, comment, date } = review;
   const { avatarUrl, name } = review.user;
   const dateRef = useRef(new Date(date)).current;
-  // FIXME: formatDate
-  // const reviewDateRef = useRef(formatDate(dateRef)).current;
 
   return (
     <li className="reviews__item">

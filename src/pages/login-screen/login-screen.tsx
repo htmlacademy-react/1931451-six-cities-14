@@ -65,7 +65,7 @@ export default function LoginScreen(): JSX.Element {
                 <label className="visually-hidden">{setCapitalLetter(LoginFormFields.Email)}</label>
                 <input
                   className="login__input form__input"
-                  // type={LoginFormFields.Email}s
+                  // type={LoginFormFields.Email}
                   type="text" // FIXME: Временно передаю type='text' здесь конечно же email
                   name={LoginFormFields.Email}
                   placeholder={setCapitalLetter(LoginFormFields.Email)}
