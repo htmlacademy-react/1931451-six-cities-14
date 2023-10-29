@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AppRoute, OfferType } from '../../../types';
-import { getPercentRating } from '../../../utils/utils';
+import { getPercentRating, setCapitalLetter } from '../../../utils/utils';
 
 type FavoritesCardProps = {
   offer: OfferType;
@@ -55,7 +55,7 @@ export default function FavoritesCard({
         <h2 className="place-card__name">
           <Link to={path}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{setCapitalLetter(type)}</p>
       </div>
     </article>
   );

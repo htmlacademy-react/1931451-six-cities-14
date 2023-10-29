@@ -3,7 +3,7 @@ import OfferCard from '../offer-card/offer-card';
 
 type OffersListProps = {
   offers: OfferType[];
-  onActiveOffer: (offer: OfferType) => void;
+  onActiveOffer: (offer: OfferType | null) => void;
 }
 
 export default function OffersList({offers, onActiveOffer}: OffersListProps): JSX.Element {

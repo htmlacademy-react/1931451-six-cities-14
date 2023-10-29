@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import { useState } from 'react';
+import styles from './offers-sort.module.css';
 
 export default function OffersSort(): JSX.Element {
-  const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [isOpened, setIsOpened] = useState(false);
 
   return (
     <form className="places__sorting" action="#" method="get">
@@ -14,12 +15,11 @@ export default function OffersSort(): JSX.Element {
       >
         Popular
         <svg
-          className="places__sorting-arrow"
+          className={classNames('places__sorting-arrow', styles.arrowTransition, {
+            [styles.arrowAnimate]: isOpened
+          })}
           width={7}
           height={4}
-          style={
-            isOpened ? { rotate: '180deg', transformOrigin: 'top center' } : {}
-          }
         >
           <use xlinkHref="#icon-arrow-select" />
         </svg>

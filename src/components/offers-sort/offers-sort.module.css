@@ -1,0 +1,8 @@
+.arrowTransition {
+  transition: all 0.3s ease 0s;
+}
+
+.arrowAnimate {
+  rotate: 180deg;
+  transform-origin: top center;
+}

@@ -5,16 +5,32 @@ type FavoritesListProps = {
   offers: OfferType[];
 };
 
+const getFavoritesByCity = (favorites: OfferType[]) => {
+  const favoritesSorted = favorites.toSorted((a, b) =>
+    a.city.name > b.city.name ? 1 : -1
+  );
+
+  return favoritesSorted.reduce<{ [key: string]: OfferType[] }>((acc, curr) => {
+    const city = curr.city.name;
+
+    if (!(city in acc)) {
+      acc[city] = [];
+    }
+
+    acc[city].push(curr);
+
+    return acc;
+  }, {});
+};
+
 export default function FavoritesList({
   offers,
 }: FavoritesListProps): JSX.Element {
-  const uniqCitiesList = [
-    ...new Set(offers.map((offer) => offer.city.name)),
-  ].sort((a, b) => (a > b ? 1 : -1));
+  const favoritesByCity = getFavoritesByCity(offers);
 
   return (
     <ul className="favorites__list">
-      {uniqCitiesList.map((city) => (
+      {Object.entries(favoritesByCity).map(([city, groupedFavorites]) => (
         <li className="favorites__locations-items" key={city}>
           <div className="favorites__locations locations locations--current">
             <div className="locations__item">
@@ -24,11 +40,9 @@ export default function FavoritesList({
             </div>
           </div>
           <div className="favorites__places">
-            {offers
-              .filter((offer) => offer.city.name === city)
-              .map((offer) => (
-                <FavoritesCard offer={offer} key={offer.id} />
-              ))}
+            {groupedFavorites.map((offer) => (
+              <FavoritesCard offer={offer} key={offer.id} />
+            ))}
           </div>
         </li>
       ))}

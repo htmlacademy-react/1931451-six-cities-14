@@ -3,16 +3,17 @@ import Header from '../../components/header/header';
 import { OfferType, ReviewType } from '../../types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {
+  addPluralEnding,
   checkAuthorizationStatus,
   getPercentRating,
   setCapitalLetter,
 } from '../../utils/utils';
 import { DEFAULT_BEGIN, MAX_IMAGES_SHOW } from './offer-screen.const';
-import ReviewsForm from './reviews-form/reviews-form';
+import ReviewsForm from '../../components/reviews-form/reviews-form';
 import { Map } from '../../components/map/map';
 import NearPlaces from '../../components/near-places/near-places';
 import { Helmet } from 'react-helmet-async';
-import { useAuthorizationStatus } from '../../hooks';
+import { useAuthorizationStatus } from '../../context/authorization-status';
 import ReviewsItem from './reviews-item/reviews-item';
 
 type OfferScreenProps = {
@@ -66,7 +67,7 @@ export default function OfferScreen({
                     <img
                       className="offer__image"
                       src={image}
-                      alt="Photo studio"
+                      alt={title}
                     />
                   </div>
                 ))}
@@ -102,10 +103,10 @@ export default function OfferScreen({
                   {setCapitalLetter(type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {bedrooms} Bedrooms
+                  {bedrooms} Bedroom{addPluralEnding(bedrooms)}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {maxAdults} adults
+                  Max {maxAdults} adult{addPluralEnding(maxAdults)}
                 </li>
               </ul>
               <div className="offer__price">

@@ -1,20 +1,23 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import { ReviewFormType } from './reviews-form.type';
-import { MAX_RATING } from '../../../const';
+import { MAX_RATING } from '../../const';
 import {
-  MIN_LENGTH_COMMENT,
+  MAX_COMMENT_LENGTH,
+  MIN_COMMENT_LENGTH,
   RATING_NOT_SELECTED,
+  ReviewFormFields,
   ratings,
 } from './reviews-form.const';
 
 export default function ReviewsForm(): JSX.Element {
-  const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false);
+  const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [reviewForm, setReviewForm] = useState<ReviewFormType>({
-    comment: '',
-    rating: RATING_NOT_SELECTED,
+    [ReviewFormFields.Comment]: '',
+    [ReviewFormFields.Rating]: RATING_NOT_SELECTED,
   });
-  const isEnabled =
-    reviewForm.comment.trim().length >= MIN_LENGTH_COMMENT &&
+  const isValid =
+    reviewForm.comment.replace(/\s/g, ' ').trim().length >= MIN_COMMENT_LENGTH &&
+    reviewForm.comment.replace(/\s/g, ' ').trim().length <= MAX_COMMENT_LENGTH &&
     reviewForm.rating !== RATING_NOT_SELECTED;
 
   const resetForm = () => {
@@ -26,7 +29,9 @@ export default function ReviewsForm(): JSX.Element {
     target,
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value =
-      target.name === 'rating' ? Number(target.value) : target.value;
+      target.name === ReviewFormFields.Rating
+        ? Number(target.value)
+        : target.value;
 
     setReviewForm((prevState) => ({
       ...prevState,
@@ -37,7 +42,7 @@ export default function ReviewsForm(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (!isEnabled) {
+    if (!isValid) {
       return;
     }
 
@@ -66,7 +71,7 @@ export default function ReviewsForm(): JSX.Element {
             <Fragment key={item}>
               <input
                 className="form__rating-input visually-hidden"
-                name="rating"
+                name={ReviewFormFields.Rating}
                 value={item}
                 id={`${item}-stars`}
                 type="radio"
@@ -89,7 +94,7 @@ export default function ReviewsForm(): JSX.Element {
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
-        name="comment"
+        name={ReviewFormFields.Comment}
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={reviewForm.comment}
         onChange={handleChange}
@@ -99,13 +104,17 @@ export default function ReviewsForm(): JSX.Element {
         <p className="reviews__help">
           To submit review please make sure to set{' '}
           <span className="reviews__star">rating</span> and describe your stay
-          with at least <b className="reviews__text-amount">50 characters</b>.
+          with at least{' '}
+          <b className="reviews__text-amount">
+            {MIN_COMMENT_LENGTH} characters
+          </b>
+          .
         </p>
 
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={!isEnabled}
+          disabled={!isValid}
         >
           {isFormDisabled ? 'Send' : 'Submit'}
         </button>

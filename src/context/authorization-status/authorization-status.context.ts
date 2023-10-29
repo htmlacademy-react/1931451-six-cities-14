@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import { AuthorizationStatusType } from '../types';
-import { AUTH_STATUS } from '../const';
+import { AuthorizationStatusType } from '../../types';
+import { AUTH_STATUS } from '../../const';
 
 export type AuthorizationStatusContextType = {
   authorizationStatus: AuthorizationStatusType;

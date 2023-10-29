@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types';
-import { useAuthorizationStatus } from '../../hooks';
+import { useAuthorizationStatus } from '../../context/authorization-status';
 import { checkAuthorizationStatus } from '../../utils/utils';
 
 type HeaderProps = {

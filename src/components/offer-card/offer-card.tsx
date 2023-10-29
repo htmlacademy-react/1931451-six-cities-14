@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import { AppRoute, OfferType } from '../../types';
-import { getPercentRating } from '../../utils/utils';
+import { getPercentRating, setCapitalLetter } from '../../utils/utils';
 import { Link } from 'react-router-dom';
 
 type OfferCardProps = {
   offer: OfferType;
-  onActiveOffer?: (offer: OfferType) => void;
+  onActiveOffer?: (offer: OfferType | null) => void;
   className?: string;
 };
 
@@ -20,7 +20,8 @@ export default function OfferCard({
   return (
     <article
       className={classNames('place-card', className)}
-      onMouseEnter={() => onActiveOffer && onActiveOffer(offer)}
+      onMouseEnter={() => onActiveOffer?.(offer)}
+      // onMouseLeave={() => onActiveOffer?.(null)}
     >
       {isPremium && (
         <div className="place-card__mark">
@@ -34,7 +35,7 @@ export default function OfferCard({
             src={previewImage}
             width={260}
             height={200}
-            alt="Place image"
+            alt={title}
           />
         </Link>
       </div>
@@ -61,7 +62,7 @@ export default function OfferCard({
         <h2 className="place-card__name">
           <Link to={path}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{setCapitalLetter(type)}</p>
       </div>
     </article>
   );

@@ -23,6 +23,8 @@ export default function MainScreen({ offers }: MainScreenProps): JSX.Element {
         })}
       >
         <LocationsTabs />
+
+        <h1 className="visually-hidden">Cities</h1>
         <Cities offers={offers} />
       </main>
     </div>

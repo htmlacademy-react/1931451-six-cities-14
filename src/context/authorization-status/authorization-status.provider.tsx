@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { AuthorizationStatusContext } from '.';
-import { AuthorizationStatusType } from '../types';
-import { AUTH_STATUS } from '../const';
+import { AuthorizationStatusContext } from './authorization-status.context';
+import { AuthorizationStatusType } from '../../types';
+import { AUTH_STATUS } from '../../const';
 
 type AuthorizationStatusProviderProps = {
   children: JSX.Element;

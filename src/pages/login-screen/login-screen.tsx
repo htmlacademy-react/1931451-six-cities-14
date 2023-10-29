@@ -2,11 +2,11 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { Navigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types';
-import { useAuthorizationStatus } from '../../hooks';
-import { checkAuthorizationStatus } from '../../utils/utils';
+import { useAuthorizationStatus } from '../../context/authorization-status';
+import { checkAuthorizationStatus, setCapitalLetter } from '../../utils/utils';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { LoginFormType } from './login-screen.type';
-import { USER_ADMIN } from './login-screen.const';
+import { LoginFormFields, USER_ADMIN } from './login-screen.const';
 import { LOCAL_STORAGE_KEY } from '../../const';
 
 // FIXME: Добавить фокус на input:email при переходе на эту страница
@@ -15,20 +15,22 @@ export default function LoginScreen(): JSX.Element {
   const { authorizationStatus, setAuthorizationStatus } =
     useAuthorizationStatus();
   const isLogged = checkAuthorizationStatus(authorizationStatus);
+  // TODO: Нужен ли здесь дженерик LoginFormType
   const [loginForm, setLoginForm] = useState<LoginFormType>({
-    email: '',
-    password: '',
+    [LoginFormFields.Email]: '',
+    [LoginFormFields.Password]: '',
   });
 
   if (isLogged) {
     return <Navigate to={AppRoute.Main} />;
   }
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    // TODO: Здесь также используется анотация LoginFormType
     setLoginForm(
       (prevState): LoginFormType => ({
         ...prevState,
-        [evt.target.name]: evt.target.value,
+        [target.name]: target.value,
       })
     );
   };
@@ -60,28 +62,29 @@ export default function LoginScreen(): JSX.Element {
               onSubmit={handleSubmit}
             >
               <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">E-mail</label>
+                <label className="visually-hidden">{setCapitalLetter(LoginFormFields.Email)}</label>
                 <input
                   className="login__input form__input"
-                  // type="email"
+                  // type={LoginFormFields.Email}s
                   type="text" // FIXME: Временно передаю type='text' здесь конечно же email
-                  name="email"
-                  placeholder="Email"
+                  name={LoginFormFields.Email}
+                  placeholder={setCapitalLetter(LoginFormFields.Email)}
                   required
                   onChange={handleChange}
                   value={loginForm.email}
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">Password</label>
+                <label className="visually-hidden">{setCapitalLetter(LoginFormFields.Password)}</label>
                 <input
                   className="login__input form__input"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
+                  type={LoginFormFields.Password}
+                  name={LoginFormFields.Password}
+                  placeholder={setCapitalLetter(LoginFormFields.Password)}
                   required
                   onChange={handleChange}
                   value={loginForm.password}
+                  autoComplete='off'
                 />
               </div>
               <button
