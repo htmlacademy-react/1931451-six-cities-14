@@ -7,6 +7,6 @@ type MapProps = {
 
 export const Map: React.FC<MapProps> = ({ className }) => (
   <section
-    className={classNames('map', [className])}
+    className={classNames('map', className)}
   />
 );

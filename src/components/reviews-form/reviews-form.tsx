@@ -1,110 +1,122 @@
+import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
+import { ReviewFormType } from './reviews-form.type';
+import { MAX_RATING } from '../../const';
+import {
+  MAX_COMMENT_LENGTH,
+  MIN_COMMENT_LENGTH,
+  RATING_NOT_SELECTED,
+  ReviewFormFields,
+  ratings,
+} from './reviews-form.const';
+
 export default function ReviewsForm(): JSX.Element {
+  const [isFormDisabled, setIsFormDisabled] = useState(false);
+  const [reviewForm, setReviewForm] = useState<ReviewFormType>({
+    [ReviewFormFields.Comment]: '',
+    [ReviewFormFields.Rating]: RATING_NOT_SELECTED,
+  });
+  const isValid =
+    reviewForm.comment.replace(/\s/g, ' ').trim().length >= MIN_COMMENT_LENGTH &&
+    reviewForm.comment.replace(/\s/g, ' ').trim().length <= MAX_COMMENT_LENGTH &&
+    reviewForm.rating !== RATING_NOT_SELECTED;
+
+  const resetForm = () => {
+    setReviewForm({ comment: '', rating: RATING_NOT_SELECTED });
+    setIsFormDisabled(false);
+  };
+
+  const handleChange = ({
+    target,
+  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const value =
+      target.name === ReviewFormFields.Rating
+        ? Number(target.value)
+        : target.value;
+
+    setReviewForm((prevState) => ({
+      ...prevState,
+      [target.name]: value,
+    }));
+  };
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (!isValid) {
+      return;
+    }
+
+    setIsFormDisabled(true);
+
+    // FIXME: Удалить setTimeout
+    setTimeout(() => {
+      resetForm();
+    }, 1500);
+  };
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
-        <input
-          className="form__rating-input visually-hidden"
-          name="rating"
-          defaultValue={5}
-          id="5-stars"
-          type="radio"
-        />
-        <label
-          htmlFor="5-stars"
-          className="reviews__rating-label form__rating-label"
-          title="perfect"
-        >
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-        <input
-          className="form__rating-input visually-hidden"
-          name="rating"
-          defaultValue={4}
-          id="4-stars"
-          type="radio"
-        />
-        <label
-          htmlFor="4-stars"
-          className="reviews__rating-label form__rating-label"
-          title="good"
-        >
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-        <input
-          className="form__rating-input visually-hidden"
-          name="rating"
-          defaultValue={3}
-          id="3-stars"
-          type="radio"
-        />
-        <label
-          htmlFor="3-stars"
-          className="reviews__rating-label form__rating-label"
-          title="not bad"
-        >
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-        <input
-          className="form__rating-input visually-hidden"
-          name="rating"
-          defaultValue={2}
-          id="2-stars"
-          type="radio"
-        />
-        <label
-          htmlFor="2-stars"
-          className="reviews__rating-label form__rating-label"
-          title="badly"
-        >
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-        <input
-          className="form__rating-input visually-hidden"
-          name="rating"
-          defaultValue={1}
-          id="1-star"
-          type="radio"
-        />
-        <label
-          htmlFor="1-star"
-          className="reviews__rating-label form__rating-label"
-          title="terribly"
-        >
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
+        {Array.from({ length: MAX_RATING }, (_value, index) => ++index)
+          .reverse()
+          .map((item) => (
+            <Fragment key={item}>
+              <input
+                className="form__rating-input visually-hidden"
+                name={ReviewFormFields.Rating}
+                value={item}
+                id={`${item}-stars`}
+                type="radio"
+                onChange={handleChange}
+                checked={reviewForm.rating === item}
+                disabled={isFormDisabled}
+              />
+              <label
+                htmlFor={`${item}-stars`}
+                className="reviews__rating-label form__rating-label"
+                title={ratings[item - 1]}
+              >
+                <svg className="form__star-image" width={37} height={33}>
+                  <use xlinkHref="#icon-star" />
+                </svg>
+              </label>
+            </Fragment>
+          ))}
       </div>
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
-        name="review"
+        name={ReviewFormFields.Comment}
         placeholder="Tell how was your stay, what you like and what can be improved"
-        defaultValue={''}
+        value={reviewForm.comment}
+        onChange={handleChange}
+        disabled={isFormDisabled}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set{' '}
           <span className="reviews__star">rating</span> and describe your stay
-          with at least <b className="reviews__text-amount">50 characters</b>.
+          with at least{' '}
+          <b className="reviews__text-amount">
+            {MIN_COMMENT_LENGTH} characters
+          </b>
+          .
         </p>
+
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled
+          disabled={!isValid}
         >
-          Submit
+          {isFormDisabled ? 'Send' : 'Submit'}
         </button>
       </div>
     </form>

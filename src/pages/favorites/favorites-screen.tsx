@@ -1,16 +1,18 @@
 import { Helmet } from 'react-helmet-async';
-import FavoritesList from '../../components/favorites-list/favorites-list';
+import FavoritesList from './favorites-list/favorites-list';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
+import { OfferType } from '../../types';
 
 type FavoritesScreenProps = {
-  isEmpty?: boolean;
+  offers: OfferType[];
 };
 
-// FIXME: Добавить логику при отсутствующих обьявлениях в избранном, временно передаю пропом
 export default function FavoritesScreen({
-  isEmpty,
+  offers,
 }: FavoritesScreenProps): JSX.Element {
+  const isEmpty = offers.length === 0;
+
   return (
     <>
       <Helmet>
@@ -38,7 +40,7 @@ export default function FavoritesScreen({
           <div className="page__favorites-container container">
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
-              <FavoritesList />
+              <FavoritesList offers={offers} />
             </section>
           </div>
         </main>

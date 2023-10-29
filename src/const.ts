@@ -1,6 +1,7 @@
 import { AuthorizationStatus } from './types';
+import { isAuthorizationStatus } from './utils/utils';
 
 export const MAX_RATING = 5;
 export const MAX_PERCENT = 100;
-export const MIN_PERCENT = 0;
-export const AUTH_STATUS = AuthorizationStatus.Auth;
+export const LOCAL_STORAGE_KEY = 'userStatus';
+export const AUTH_STATUS = isAuthorizationStatus((localStorage.getItem(LOCAL_STORAGE_KEY))) || AuthorizationStatus.NoAuth;

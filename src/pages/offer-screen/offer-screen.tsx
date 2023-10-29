@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { OfferType } from '../../types';
+import { OfferType, ReviewType } from '../../types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {
+  addPluralEnding,
   checkAuthorizationStatus,
   getPercentRating,
   setCapitalLetter,
@@ -12,19 +13,26 @@ import ReviewsForm from '../../components/reviews-form/reviews-form';
 import { Map } from '../../components/map/map';
 import NearPlaces from '../../components/near-places/near-places';
 import { Helmet } from 'react-helmet-async';
-import { useAuthorizationStatus } from '../../hooks';
+import { useAuthorizationStatus } from '../../context/authorization-status';
+import ReviewsItem from './reviews-item/reviews-item';
 
 type OfferScreenProps = {
   offers: OfferType[];
+  reviews: ReviewType[];
 };
 
 export default function OfferScreen({
   offers,
+  reviews,
 }: OfferScreenProps): JSX.Element {
   const params = useParams();
+  const offer = offers.find((item) => item.id === Number(params.id));
   const { authorizationStatus } = useAuthorizationStatus();
   const isLogged = checkAuthorizationStatus(authorizationStatus);
-  const offer = offers.find((item) => item.id === Number(params.id));
+
+  if (!offer) {
+    return <NotFoundScreen />;
+  }
 
   const {
     images,
@@ -36,12 +44,12 @@ export default function OfferScreen({
     maxAdults,
     price,
     goods,
-    description
-  } = offer ?? {};
+    description,
+  } = offer;
 
-  const { avatarUrl, name, isPro } = offer?.host ?? {};
+  const { avatarUrl, name, isPro } = offer.host;
 
-  return offer ? (
+  return (
     <div className="page">
       <Helmet>
         <title>6 Cities: {offer.title}</title>
@@ -52,15 +60,17 @@ export default function OfferScreen({
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {images?.slice(DEFAULT_BEGIN, Math.min(MAX_IMAGES_SHOW, images.length)).map((image) => (
-                <div className="offer__image-wrapper" key={image}>
-                  <img
-                    className="offer__image"
-                    src={image}
-                    alt="Photo studio"
-                  />
-                </div>
-              ))}
+              {images
+                .slice(DEFAULT_BEGIN, Math.min(MAX_IMAGES_SHOW, images.length))
+                .map((image) => (
+                  <div className="offer__image-wrapper" key={image}>
+                    <img
+                      className="offer__image"
+                      src={image}
+                      alt={title}
+                    />
+                  </div>
+                ))}
             </div>
           </div>
           <div className="offer__container container">
@@ -93,10 +103,10 @@ export default function OfferScreen({
                   {setCapitalLetter(type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {bedrooms} Bedrooms
+                  {bedrooms} Bedroom{addPluralEnding(bedrooms)}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {maxAdults} adults
+                  Max {maxAdults} adult{addPluralEnding(maxAdults)}
                 </li>
               </ul>
               <div className="offer__price">
@@ -106,7 +116,7 @@ export default function OfferScreen({
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {goods?.map((item) => (
+                  {goods.map((item) => (
                     <li className="offer__inside-item" key={item}>
                       {item}
                     </li>
@@ -134,41 +144,15 @@ export default function OfferScreen({
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">
-                  Reviews · <span className="reviews__amount">1</span>
+                  Reviews ·{' '}
+                  <span className="reviews__amount">{reviews.length}</span>
                 </h2>
                 <ul className="reviews__list">
-                  <li className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img
-                          className="reviews__avatar user__avatar"
-                          src="img/avatar-max.jpg"
-                          width={54}
-                          height={54}
-                          alt="Reviews avatar"
-                        />
-                      </div>
-                      <span className="reviews__user-name">Max</span>
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{ width: '80%' }} />
-                          <span className="visually-hidden">Rating</span>
-                        </div>
-                      </div>
-                      <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river
-                        by the unique lightness of Amsterdam. The building is
-                        green and from 18th century.
-                      </p>
-                      <time className="reviews__time" dateTime="2019-04-24">
-                        April 2019
-                      </time>
-                    </div>
-                  </li>
+                  {reviews.map((review) => (
+                    <ReviewsItem review={review} key={review.id} />
+                  ))}
                 </ul>
-                {isLogged && <ReviewsForm /> }
+                {isLogged && <ReviewsForm />}
               </section>
             </div>
           </div>
@@ -177,7 +161,5 @@ export default function OfferScreen({
         <NearPlaces currentOffer={offer} offers={offers} />
       </main>
     </div>
-  ) : (
-    <NotFoundScreen />
   );
 }
