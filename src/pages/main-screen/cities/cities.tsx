@@ -10,9 +10,7 @@ type CitiesProps = {
 };
 
 export default function Cities({ offers }: CitiesProps): JSX.Element {
-  // FIXME: Убрать eslint-disable-next-line
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_activeOffer, setActiveOffer] = useState<OfferType | null>(null);
+  const [activeOffer, setActiveOffer] = useState<OfferType | null>(null);
 
   return offers.length ? (
     <div className="cities">
@@ -20,7 +18,7 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">
-            {offers.length} place{addPluralEnding(offers.length)} to stay in Paris
+            {offers.length} place{addPluralEnding(offers.length)} to stay in {offers[0].city.name}
           </b>
           <OffersSort />
           <OffersList
@@ -29,7 +27,7 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
           />
         </section>
         <div className="cities__right-section">
-          <Map className="cities__map" />
+          <Map className="cities__map" offers={offers} activeOffer={activeOffer} />
         </div>
       </div>
     </div>

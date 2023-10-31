@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { AppRoute, OfferType } from '../../types';
-import { getPercentRating, setCapitalLetter } from '../../utils/utils';
+import { OfferType } from '../../types';
+import { getPathToOffer, getPercentRating, setCapitalLetter } from '../../utils/utils';
 import { Link } from 'react-router-dom';
 
 type OfferCardProps = {
@@ -15,13 +15,13 @@ export default function OfferCard({
   onActiveOffer,
 }: OfferCardProps): JSX.Element {
   const { isPremium, previewImage, price, rating, title, type, id } = offer;
-  const path = AppRoute.Offer.replace(':id', String(id));
+  const path = getPathToOffer(id);
 
   return (
     <article
       className={classNames('place-card', className)}
       onMouseEnter={() => onActiveOffer?.(offer)}
-      // onMouseLeave={() => onActiveOffer?.(null)}
+      onMouseLeave={() => onActiveOffer?.(null)}
     >
       {isPremium && (
         <div className="place-card__mark">

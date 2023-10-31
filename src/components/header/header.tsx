@@ -1,18 +1,21 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types';
 import { useAuthorizationStatus } from '../../context/authorization-status';
 import { checkAuthorizationStatus } from '../../utils/utils';
+import { PRIVATE_ROUTES } from '../../const';
+import styles from './header.module.css';
 
 type HeaderProps = {
   isLoginScreen?: boolean;
 };
 
-// FIXME: Если пользователь находится не на приватном маршруте, то не перекидывать его на главную страницу при Sign out
 export default function Header({
   isLoginScreen,
 }: HeaderProps): JSX.Element {
   const { authorizationStatus, setAuthorizationStatus } = useAuthorizationStatus();
   const isLogged = checkAuthorizationStatus(authorizationStatus);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const getStyleForNavLink = ({ isActive }: { isActive: boolean }): object =>
     isActive ? { pointerEvents: 'none' } : {};
@@ -20,6 +23,10 @@ export default function Header({
   const handleClick = () => {
     setAuthorizationStatus(AuthorizationStatus.NoAuth);
     localStorage.clear();
+
+    if(PRIVATE_ROUTES.includes(pathname)) {
+      navigate(AppRoute.Main);
+    }
   };
 
   return (
@@ -58,13 +65,12 @@ export default function Header({
                   </NavLink>
                 </li>
                 <li className="header__nav-item">
-                  <Link
+                  <button
                     onClick={handleClick}
-                    to={AppRoute.Main}
-                    className="header__nav-link"
+                    className={`header__nav-link ${styles.resetStyleButton}`}
                   >
                     <span className="header__signout">Sign out</span>
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </nav>
@@ -78,6 +84,7 @@ export default function Header({
                   <Link
                     className="header__nav-link header__nav-link--profile"
                     to={AppRoute.Login}
+                    state={{from: pathname}}
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__login">Sign in</span>

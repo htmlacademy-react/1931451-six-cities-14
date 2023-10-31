@@ -1,4 +1,4 @@
-import { OfferType } from '../../../types';
+import { CityNamesType, OfferType } from '../../../types';
 import FavoritesCard from '../favorites-card/favorites-card';
 
 type FavoritesListProps = {
@@ -11,7 +11,7 @@ const getFavoritesByCity = (favorites: OfferType[]) => {
   );
 
   return favoritesSorted.reduce<{ [key: string]: OfferType[] }>((acc, curr) => {
-    const city = curr.city.name;
+    const city: CityNamesType = curr.city.name;
 
     if (!(city in acc)) {
       acc[city] = [];
@@ -34,6 +34,7 @@ export default function FavoritesList({
         <li className="favorites__locations-items" key={city}>
           <div className="favorites__locations locations locations--current">
             <div className="locations__item">
+              {/* FIXME: Исправить тег а */}
               <a className="locations__item-link" href="#">
                 <span>{city}</span>
               </a>
