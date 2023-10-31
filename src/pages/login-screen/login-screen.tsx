@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types';
 import { useAuthorizationStatus } from '../../context/authorization-status';
 import { checkAuthorizationStatus, setCapitalLetter } from '../../utils/utils';
@@ -9,14 +9,19 @@ import { LoginFormType } from './login-screen.type';
 import { LoginFormFields, USER_ADMIN } from './login-screen.const';
 import { LOCAL_STORAGE_KEY } from '../../const';
 
-// FIXME: Добавить фокус на input:email при переходе на эту страница
-// FIXME: Насроить переход на страницу с которой пользователь зашел после авторизации
+type LocationType = {
+  state: { from: AppRoute};
+}
+
 export default function LoginScreen(): JSX.Element {
   const { authorizationStatus, setAuthorizationStatus } =
     useAuthorizationStatus();
   const isLogged = checkAuthorizationStatus(authorizationStatus);
-  // TODO: Нужен ли здесь дженерик LoginFormType
-  const [loginForm, setLoginForm] = useState<LoginFormType>({
+
+  const navigate = useNavigate();
+  const { state } = useLocation() as LocationType;
+
+  const [loginForm, setLoginForm] = useState<LoginFormType>({ // TODO: Нужен ли здесь дженерик LoginFormType
     [LoginFormFields.Email]: '',
     [LoginFormFields.Password]: '',
   });
@@ -26,9 +31,8 @@ export default function LoginScreen(): JSX.Element {
   }
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    // TODO: Здесь также используется анотация LoginFormType
     setLoginForm(
-      (prevState): LoginFormType => ({
+      (prevState): LoginFormType => ({ // TODO: Здесь также используется анотация LoginFormType
         ...prevState,
         [target.name]: target.value,
       })
@@ -41,6 +45,7 @@ export default function LoginScreen(): JSX.Element {
     if (email === password && password === USER_ADMIN) {
       setAuthorizationStatus(AuthorizationStatus.Auth);
       localStorage.setItem(LOCAL_STORAGE_KEY, AuthorizationStatus.Auth);
+      navigate(state.from, {replace: true});
     }
   };
 
@@ -62,7 +67,9 @@ export default function LoginScreen(): JSX.Element {
               onSubmit={handleSubmit}
             >
               <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">{setCapitalLetter(LoginFormFields.Email)}</label>
+                <label className="visually-hidden" htmlFor={LoginFormFields.Email}>
+                  {setCapitalLetter(LoginFormFields.Email)}
+                </label>
                 <input
                   className="login__input form__input"
                   // type={LoginFormFields.Email}
@@ -72,10 +79,15 @@ export default function LoginScreen(): JSX.Element {
                   required
                   onChange={handleChange}
                   value={loginForm.email}
+                  autoFocus
+                  id={LoginFormFields.Email}
+                  autoComplete='on'
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">{setCapitalLetter(LoginFormFields.Password)}</label>
+                <label className="visually-hidden" htmlFor={LoginFormFields.Password}>
+                  {setCapitalLetter(LoginFormFields.Password)}
+                </label>
                 <input
                   className="login__input form__input"
                   type={LoginFormFields.Password}
@@ -84,7 +96,8 @@ export default function LoginScreen(): JSX.Element {
                   required
                   onChange={handleChange}
                   value={loginForm.password}
-                  autoComplete='off'
+                  autoComplete="off"
+                  id={LoginFormFields.Password}
                 />
               </div>
               <button
@@ -97,6 +110,7 @@ export default function LoginScreen(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
+              {/* FIXME: Исправить тег а */}
               <a className="locations__item-link" href="#">
                 <span>Amsterdam</span>
               </a>

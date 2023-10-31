@@ -1,7 +1,7 @@
-import { CityName } from './city-name.enum';
+import { CityNamesType } from '.';
 import { LocationType } from './location.type';
 
 export type CityType = {
-  name: keyof typeof CityName;
+  name: CityNamesType;
   location: LocationType;
 }

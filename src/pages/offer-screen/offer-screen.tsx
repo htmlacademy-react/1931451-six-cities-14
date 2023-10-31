@@ -64,11 +64,7 @@ export default function OfferScreen({
                 .slice(DEFAULT_BEGIN, Math.min(MAX_IMAGES_SHOW, images.length))
                 .map((image) => (
                   <div className="offer__image-wrapper" key={image}>
-                    <img
-                      className="offer__image"
-                      src={image}
-                      alt={title}
-                    />
+                    <img className="offer__image" src={image} alt={title} />
                   </div>
                 ))}
             </div>
@@ -156,7 +152,12 @@ export default function OfferScreen({
               </section>
             </div>
           </div>
-          <Map className="offer__map" />
+          <Map
+            className="offer__map"
+            offers={offers}
+            activeOffer={offer}
+            isNeedZoom
+          />
         </section>
         <NearPlaces currentOffer={offer} offers={offers} />
       </main>

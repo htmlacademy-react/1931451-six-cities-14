@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { AppRoute, OfferType } from '../../../types';
-import { getPercentRating, setCapitalLetter } from '../../../utils/utils';
+import { OfferType } from '../../../types';
+import { getPathToOffer, getPercentRating, setCapitalLetter } from '../../../utils/utils';
 
 type FavoritesCardProps = {
   offer: OfferType;
@@ -10,7 +10,7 @@ export default function FavoritesCard({
   offer,
 }: FavoritesCardProps): JSX.Element {
   const { isPremium, previewImage, price, rating, title, type, id } = offer;
-  const path = AppRoute.Offer.replace(':id', String(id));
+  const path = getPathToOffer(id);
 
   return (
     <article className="favorites__card place-card" id={offer.city.name}>
