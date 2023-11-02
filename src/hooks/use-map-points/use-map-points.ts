@@ -36,6 +36,4 @@ export function useMapPoints(
       map.removeLayer(markerLayer);
     };
   }, [map, points, activePoint, navigate]);
-
-  return map;
 }
