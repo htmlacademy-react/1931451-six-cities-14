@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { useMap, useMapPoints } from '../../hooks';
+import { useMapWithPoints } from '../../hooks';
 import { OfferType } from '../../types';
+import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   offers: OfferType[];
@@ -18,8 +19,7 @@ export const Map: React.FC<MapProps> = ({
 }) => {
   const { city } = offers[0];
   const mapRef = useRef<HTMLElement | null>(null);
-  const map = useMap(mapRef, city);
-  useMapPoints(map, offers, activeOffer);
+  const map = useMapWithPoints(mapRef, city, offers, activeOffer);
 
   useEffect(() => {
     if (!map) {

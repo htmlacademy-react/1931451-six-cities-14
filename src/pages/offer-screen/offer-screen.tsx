@@ -4,17 +4,14 @@ import { OfferType, ReviewType } from '../../types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {
   addPluralEnding,
-  checkAuthorizationStatus,
   getPercentRating,
   setCapitalLetter,
 } from '../../utils/utils';
 import { DEFAULT_BEGIN, MAX_IMAGES_SHOW } from './offer-screen.const';
-import ReviewsForm from '../../components/reviews-form/reviews-form';
 import { Map } from '../../components/map/map';
 import NearPlaces from '../../components/near-places/near-places';
 import { Helmet } from 'react-helmet-async';
-import { useAuthorizationStatus } from '../../context/authorization-status';
-import ReviewsItem from './reviews-item/reviews-item';
+import ReviewsList from '../../components/reviews-list/reviews-list';
 
 type OfferScreenProps = {
   offers: OfferType[];
@@ -27,8 +24,6 @@ export default function OfferScreen({
 }: OfferScreenProps): JSX.Element {
   const params = useParams();
   const offer = offers.find((item) => item.id === Number(params.id));
-  const { authorizationStatus } = useAuthorizationStatus();
-  const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   if (!offer) {
     return <NotFoundScreen />;
@@ -138,18 +133,7 @@ export default function OfferScreen({
                   <p className="offer__text">{description}</p>
                 </div>
               </div>
-              <section className="offer__reviews reviews">
-                <h2 className="reviews__title">
-                  Reviews ·{' '}
-                  <span className="reviews__amount">{reviews.length}</span>
-                </h2>
-                <ul className="reviews__list">
-                  {reviews.map((review) => (
-                    <ReviewsItem review={review} key={review.id} />
-                  ))}
-                </ul>
-                {isLogged && <ReviewsForm />}
-              </section>
+              <ReviewsList reviews={reviews} />
             </div>
           </div>
           <Map

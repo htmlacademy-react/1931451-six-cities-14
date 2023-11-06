@@ -5,7 +5,6 @@ import { AppRoute, AuthorizationStatus } from '../../types';
 import { useAuthorizationStatus } from '../../context/authorization-status';
 import { checkAuthorizationStatus, setCapitalLetter } from '../../utils/utils';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { LoginFormType } from './login-screen.type';
 import { LoginFormFields, USER_ADMIN } from './login-screen.const';
 import { LOCAL_STORAGE_KEY } from '../../const';
 
@@ -19,9 +18,9 @@ export default function LoginScreen(): JSX.Element {
   const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   const navigate = useNavigate();
-  const { state } = useLocation() as LocationType;
+  const { state } = useLocation() as LocationType; // TODO: Не получилось затипизировать без as
 
-  const [loginForm, setLoginForm] = useState<LoginFormType>({ // TODO: Нужен ли здесь дженерик LoginFormType
+  const [loginForm, setLoginForm] = useState({
     [LoginFormFields.Email]: '',
     [LoginFormFields.Password]: '',
   });
@@ -32,7 +31,7 @@ export default function LoginScreen(): JSX.Element {
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setLoginForm(
-      (prevState): LoginFormType => ({ // TODO: Здесь также используется анотация LoginFormType
+      (prevState) => ({
         ...prevState,
         [target.name]: target.value,
       })
