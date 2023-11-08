@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
-import { offersData } from './mocks/offers.data';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';
 import { AuthorizationStatusProvider } from './context/authorization-status';
-import { reviewsData } from './mocks/reviews.data';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,14 +14,16 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <HelmetProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <AuthorizationStatusProvider>
-          <App offers={offersData} reviews={reviewsData} />
-        </AuthorizationStatusProvider>
-      </BrowserRouter>
-    </HelmetProvider>
+    <Provider store={store}>
+      <HelmetProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <AuthorizationStatusProvider>
+            <App />
+          </AuthorizationStatusProvider>
+        </BrowserRouter>
+      </HelmetProvider>
+    </Provider>
   </React.StrictMode>
 );
 

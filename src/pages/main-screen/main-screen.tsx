@@ -4,15 +4,16 @@ import LocationsTabs from '../../components/locations-tabs/locations-tabs';
 import { OfferType } from '../../types';
 import { Helmet } from 'react-helmet-async';
 import Cities from './cities/cities';
-import { useState } from 'react';
-import { CITY_NAMES, DEFAULT_CITY_INDEX } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { changeCity } from '../../store/action';
 
 type MainScreenProps = {
   offers: OfferType[];
 };
 
 export default function MainScreen({ offers }: MainScreenProps): JSX.Element {
-  const [activeCity, setActiveCity] = useState(CITY_NAMES[DEFAULT_CITY_INDEX]);
+  const activeCity = useAppSelector((state) => state.city);
+  const dispatch = useAppDispatch();
 
   const filteredOffersByCity = offers.filter(
     (offer) => offer.city.name === activeCity
@@ -30,7 +31,10 @@ export default function MainScreen({ offers }: MainScreenProps): JSX.Element {
           'page__main--index-empty': Boolean(!offers.length),
         })}
       >
-        <LocationsTabs activeCity={activeCity} onActiveCity={(city) => setActiveCity(city)} />
+        <LocationsTabs
+          activeCity={activeCity}
+          onActiveCity={(city) => dispatch(changeCity({ city }))}
+        />
 
         <h1 className="visually-hidden">Cities</h1>
         <Cities offers={filteredOffersByCity} />
