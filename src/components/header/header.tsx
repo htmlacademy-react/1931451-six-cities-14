@@ -4,6 +4,7 @@ import { useAuthorizationStatus } from '../../context/authorization-status';
 import { checkAuthorizationStatus } from '../../utils/utils';
 import { PRIVATE_ROUTES } from '../../const';
 import styles from './header.module.css';
+import { useAppSelector } from '../../hooks';
 
 type HeaderProps = {
   isLoginScreen?: boolean;
@@ -12,6 +13,7 @@ type HeaderProps = {
 export default function Header({
   isLoginScreen,
 }: HeaderProps): JSX.Element {
+  const favorites = useAppSelector((state) => state.favorites);
   const { authorizationStatus, setAuthorizationStatus } = useAuthorizationStatus();
   const isLogged = checkAuthorizationStatus(authorizationStatus);
   const { pathname } = useLocation();
@@ -61,7 +63,7 @@ export default function Header({
                     <span className="header__user-name user__name">
                       Oliver.conner@gmail.com
                     </span>
-                    <span className="header__favorite-count">5</span>
+                    <span className="header__favorite-count">{favorites.length}</span>
                   </NavLink>
                 </li>
                 <li className="header__nav-item">

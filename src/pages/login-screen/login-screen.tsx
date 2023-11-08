@@ -1,18 +1,21 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types';
 import { useAuthorizationStatus } from '../../context/authorization-status';
 import { checkAuthorizationStatus, setCapitalLetter } from '../../utils/utils';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { LoginFormFields, USER_ADMIN } from './login-screen.const';
+import { LOGIN_CITY_LINK, LoginFormFields, USER_ADMIN } from './login-screen.const';
 import { LOCAL_STORAGE_KEY } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { changeCity } from '../../store/action';
 
 type LocationType = {
-  state: { from: AppRoute};
-}
+  state: { from: AppRoute };
+};
 
 export default function LoginScreen(): JSX.Element {
+  const dispatch = useAppDispatch();
   const { authorizationStatus, setAuthorizationStatus } =
     useAuthorizationStatus();
   const isLogged = checkAuthorizationStatus(authorizationStatus);
@@ -30,12 +33,10 @@ export default function LoginScreen(): JSX.Element {
   }
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    setLoginForm(
-      (prevState) => ({
-        ...prevState,
-        [target.name]: target.value,
-      })
-    );
+    setLoginForm((prevState) => ({
+      ...prevState,
+      [target.name]: target.value,
+    }));
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -44,7 +45,7 @@ export default function LoginScreen(): JSX.Element {
     if (email === password && password === USER_ADMIN) {
       setAuthorizationStatus(AuthorizationStatus.Auth);
       localStorage.setItem(LOCAL_STORAGE_KEY, AuthorizationStatus.Auth);
-      navigate(state.from, {replace: true});
+      navigate(state.from, { replace: true });
     }
   };
 
@@ -66,7 +67,10 @@ export default function LoginScreen(): JSX.Element {
               onSubmit={handleSubmit}
             >
               <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden" htmlFor={LoginFormFields.Email}>
+                <label
+                  className="visually-hidden"
+                  htmlFor={LoginFormFields.Email}
+                >
                   {setCapitalLetter(LoginFormFields.Email)}
                 </label>
                 <input
@@ -80,11 +84,14 @@ export default function LoginScreen(): JSX.Element {
                   value={loginForm.email}
                   autoFocus
                   id={LoginFormFields.Email}
-                  autoComplete='on'
+                  autoComplete="on"
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden" htmlFor={LoginFormFields.Password}>
+                <label
+                  className="visually-hidden"
+                  htmlFor={LoginFormFields.Password}
+                >
                   {setCapitalLetter(LoginFormFields.Password)}
                 </label>
                 <input
@@ -109,10 +116,13 @@ export default function LoginScreen(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              {/* FIXME: Исправить тег а */}
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
+              <Link
+                className="locations__item-link"
+                onClick={() => dispatch(changeCity({ city: LOGIN_CITY_LINK }))}
+                to={AppRoute.Main}
+              >
+                <span>{LOGIN_CITY_LINK}</span>
+              </Link>
             </div>
           </section>
         </div>
