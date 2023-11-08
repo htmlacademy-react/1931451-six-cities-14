@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { useMap, useMapPoints } from '../../hooks';
+import { useMapWithPoints } from '../../hooks';
 import { OfferType } from '../../types';
+import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   offers: OfferType[];
@@ -18,34 +19,33 @@ export const Map: React.FC<MapProps> = ({
 }) => {
   const { city } = offers[0];
   const mapRef = useRef<HTMLElement | null>(null);
-  const map = useMap(mapRef, city);
-  const mapPoints = useMapPoints(map, offers, activeOffer);
+  const map = useMapWithPoints(mapRef, city, offers, activeOffer);
 
   useEffect(() => {
-    if (!mapPoints) {
+    if (!map) {
       return;
     }
 
     if (activeOffer && !isNeedZoom) {
-      mapPoints.flyTo(
+      map.flyTo(
         [activeOffer.location.latitude, activeOffer.location.longitude],
         activeOffer.location.zoom
       );
     } else {
-      mapPoints.flyTo(
+      map.flyTo(
         [city.location.latitude, city.location.longitude],
         city.location.zoom
       );
     }
 
     if (activeOffer && isNeedZoom) {
-      mapPoints.setView(
+      map.setView(
         [activeOffer.location.latitude, activeOffer.location.longitude],
         activeOffer.location.zoom
       );
     }
 
-  }, [mapPoints, activeOffer, isNeedZoom, city]);
+  }, [map, activeOffer, isNeedZoom, city]);
 
   return <section className={classNames('map', className)} ref={mapRef} />;
 };

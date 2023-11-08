@@ -1,2 +1,1 @@
-export * from './use-map/use-map';
-export * from './use-map-points/use-map-points';
+export * from './use-map-with-points/use-map-with-points';
