@@ -7,3 +7,10 @@ export const LOCAL_STORAGE_KEY = 'userStatus';
 export const AUTH_STATUS = isAuthorizationStatus((localStorage.getItem(LOCAL_STORAGE_KEY))) || AuthorizationStatus.NoAuth;
 export const PRIVATE_ROUTES: readonly string[] = ['/favorites'];
 export const CITY_NAMES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+
+export const OffersSortMap = {
+  Popular: 'Popular',
+  LowPrice: 'Price: low to high',
+  HighPrice: 'Price: high to low',
+  TopRated: 'Top rated first'
+};

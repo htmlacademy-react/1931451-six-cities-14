@@ -1,9 +1,9 @@
-import { OfferType } from '../../../types';
+import { OfferType, OffersSortMapType } from '../../../types';
 import { Map } from '../../../components/map/map';
 import OffersList from '../../../components/offers-list/offers-list';
 import OffersSort from '../../../components/offers-sort/offers-sort';
 import { useState } from 'react';
-import { addPluralEnding } from '../../../utils/utils';
+import { addPluralEnding, getSortedOffers } from '../../../utils/utils';
 
 type CitiesProps = {
   offers: OfferType[];
@@ -11,6 +11,7 @@ type CitiesProps = {
 
 export default function Cities({ offers }: CitiesProps): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<OfferType | null>(null);
+  const [sortType, setSortType] = useState<OffersSortMapType | null>(null);
 
   return offers.length ? (
     <div className="cities">
@@ -20,9 +21,9 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
           <b className="places__found">
             {offers.length} place{addPluralEnding(offers.length)} to stay in {offers[0].city.name}
           </b>
-          <OffersSort />
+          <OffersSort onSortType={(data: OffersSortMapType) => setSortType(data)} />
           <OffersList
-            offers={offers}
+            offers={getSortedOffers(offers, sortType)}
             onActiveOffer={(offer) => setActiveOffer(offer)}
           />
         </section>

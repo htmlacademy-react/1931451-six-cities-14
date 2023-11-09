@@ -1,13 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import {
-  addFavorites,
-  addNewFavorite,
-  addNewReview,
-  addOffers,
-  addReviews,
-  changeCity,
-  removeFavorite,
-} from './action';
+import { addFavorite, addReview, changeCity, loadFavorites, loadOffers, loadReviews, removeFavorite } from './action';
 import { offersData } from '../mocks/offers.data';
 import { CityNamesType, OfferType, ReviewType } from '../types';
 import { reviewsData } from '../mocks/reviews.data';
@@ -31,19 +23,19 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCity, (state, { payload }) => {
       state.city = payload.city;
     })
-    .addCase(addOffers, (state, { payload }) => {
+    .addCase(loadOffers, (state, { payload }) => {
       state.offers = payload.offers;
     })
-    .addCase(addReviews, (state, { payload }) => {
+    .addCase(loadReviews, (state, { payload }) => {
       state.reviews = payload.reviews;
     })
-    .addCase(addNewReview, (state, { payload }) => {
+    .addCase(addReview, (state, { payload }) => {
       state.reviews.push(payload.review);
     })
-    .addCase(addFavorites, (state, { payload }) => {
+    .addCase(loadFavorites, (state, { payload }) => {
       state.favorites = payload.favorites;
     })
-    .addCase(addNewFavorite, (state, { payload }) => {
+    .addCase(addFavorite, (state, { payload }) => {
       state.favorites.push(payload.favoriteOffer);
     })
     .addCase(removeFavorite, (state, { payload }) => {
