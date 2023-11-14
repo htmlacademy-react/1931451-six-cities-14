@@ -1,17 +1,13 @@
 import classNames from 'classnames';
 import Header from '../../components/header/header';
 import LocationsTabs from '../../components/locations-tabs/locations-tabs';
-import { OfferType } from '../../types';
 import { Helmet } from 'react-helmet-async';
 import Cities from './cities/cities';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeCity } from '../../store/action';
+import { setActiveCity } from '../../store/action';
 
-type MainScreenProps = {
-  offers: OfferType[];
-};
-
-export default function MainScreen({ offers }: MainScreenProps): JSX.Element {
+export default function MainScreen(): JSX.Element {
+  const offers = useAppSelector((store) => store.offers);
   const activeCity = useAppSelector((state) => state.city);
   const dispatch = useAppDispatch();
 
@@ -33,7 +29,7 @@ export default function MainScreen({ offers }: MainScreenProps): JSX.Element {
       >
         <LocationsTabs
           activeCity={activeCity}
-          onActiveCity={(city) => dispatch(changeCity({ city }))}
+          onActiveCity={(city) => dispatch(setActiveCity({ city }))}
         />
 
         <h1 className="visually-hidden">Cities</h1>

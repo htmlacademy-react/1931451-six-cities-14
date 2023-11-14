@@ -1,13 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import {
-  addFavorites,
-  addNewFavorite,
-  addNewReview,
-  addOffers,
-  addReviews,
-  changeCity,
-  removeFavorite,
-} from './action';
+import { addFavorites, addNewFavorite, addNewReview, addOffers, addReviews, removeFavorite, setActiveCity } from './action';
 import { offersData } from '../mocks/offers.data';
 import { CityNamesType, OfferType, ReviewType } from '../types';
 import { reviewsData } from '../mocks/reviews.data';
@@ -28,7 +20,7 @@ const initialState: InitialStateType = {
 
 export const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(changeCity, (state, { payload }) => {
+    .addCase(setActiveCity, (state, { payload }) => {
       state.city = payload.city;
     })
     .addCase(addOffers, (state, { payload }) => {

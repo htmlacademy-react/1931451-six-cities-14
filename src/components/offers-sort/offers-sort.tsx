@@ -1,23 +1,41 @@
 import classNames from 'classnames';
 import { useState } from 'react';
 import styles from './offers-sort.module.css';
+import { OffersSortMap } from '../../const';
+import { OffersSortMapType } from '../../types';
 
-export default function OffersSort(): JSX.Element {
+type OffersSortProps = {
+  onSortType: (type: OffersSortMapType) => void;
+};
+
+export default function OffersSort({
+  onSortType,
+}: OffersSortProps): JSX.Element {
   const [isOpened, setIsOpened] = useState(false);
+  const [activeOption, setActiveOption] = useState(OffersSortMap.Popular);
 
   return (
-    <form className="places__sorting" action="#" method="get">
+    <form
+      className="places__sorting"
+      action="#"
+      method="get"
+      onClick={() => isOpened && setIsOpened(false)}
+    >
       <span className="places__sorting-caption">Sort by</span>
       <span
         className="places__sorting-type"
         tabIndex={0}
         onClick={() => setIsOpened((prevState) => !prevState)}
       >
-        Popular
+        {activeOption}
         <svg
-          className={classNames('places__sorting-arrow', styles.arrowTransition, {
-            [styles.arrowAnimate]: isOpened
-          })}
+          className={classNames(
+            'places__sorting-arrow',
+            styles.arrowTransition,
+            {
+              [styles.arrowAnimate]: isOpened,
+            }
+          )}
           width={7}
           height={4}
         >
@@ -29,18 +47,21 @@ export default function OffersSort(): JSX.Element {
           'places__options--opened': isOpened,
         })}
       >
-        <li className="places__option places__option--active" tabIndex={0}>
-          Popular
-        </li>
-        <li className="places__option" tabIndex={0}>
-          Price: low to high
-        </li>
-        <li className="places__option" tabIndex={0}>
-          Price: high to low
-        </li>
-        <li className="places__option" tabIndex={0}>
-          Top rated first
-        </li>
+        {Object.entries(OffersSortMap).map(([type, value]) => (
+          <li
+            className={classNames('places__option', {
+              'places__option--active': value === activeOption,
+            })}
+            tabIndex={0}
+            key={value}
+            onClick={() => {
+              setActiveOption(value);
+              onSortType(type as OffersSortMapType); // TODO: Не работает даже если сделать OffersSortMap константным обьектом
+            }}
+          >
+            {value}
+          </li>
+        ))}
       </ul>
     </form>
   );

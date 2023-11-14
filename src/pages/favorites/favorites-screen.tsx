@@ -2,16 +2,12 @@ import { Helmet } from 'react-helmet-async';
 import FavoritesList from './favorites-list/favorites-list';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
-import { OfferType } from '../../types';
+import { useAppSelector } from '../../hooks';
+import { ZERO_OFFERS } from './favorites-screen.const';
 
-type FavoritesScreenProps = {
-  offers: OfferType[];
-};
-
-export default function FavoritesScreen({
-  offers,
-}: FavoritesScreenProps): JSX.Element {
-  const isEmpty = offers.length === 0;
+export default function FavoritesScreen(): JSX.Element {
+  const offers = useAppSelector((store) => store.favorites);
+  const isEmpty = offers.length === ZERO_OFFERS;
 
   return (
     <>
