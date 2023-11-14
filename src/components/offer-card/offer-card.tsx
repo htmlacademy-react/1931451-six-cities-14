@@ -1,6 +1,10 @@
 import classNames from 'classnames';
 import { OfferType } from '../../types';
-import { getPathToOffer, getPercentRating, setCapitalLetter } from '../../utils/utils';
+import {
+  getPathToOffer,
+  getPercentRating,
+  setCapitalLetter,
+} from '../../utils/utils';
 import { Link } from 'react-router-dom';
 
 type OfferCardProps = {
@@ -45,8 +49,12 @@ export default function OfferCard({
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
-            {/*FIXME класс для активной кнопки place-card__bookmark-button--active */}
+          <button
+            className={classNames('place-card__bookmark-button button', {
+              'place-card__bookmark-button--active': offer.isFavorite,
+            })}
+            type="button"
+          >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
             </svg>

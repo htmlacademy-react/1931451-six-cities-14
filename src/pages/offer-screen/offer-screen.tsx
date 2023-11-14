@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { OfferType, ReviewType } from '../../types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {
   addPluralEnding,
@@ -12,16 +11,10 @@ import { Map } from '../../components/map/map';
 import NearPlaces from '../../components/near-places/near-places';
 import { Helmet } from 'react-helmet-async';
 import ReviewsList from '../../components/reviews-list/reviews-list';
+import { useAppSelector } from '../../hooks';
 
-type OfferScreenProps = {
-  offers: OfferType[];
-  reviews: ReviewType[];
-};
-
-export default function OfferScreen({
-  offers,
-  reviews,
-}: OfferScreenProps): JSX.Element {
+export default function OfferScreen(): JSX.Element {
+  const { offers, reviews } = useAppSelector((store) => store);
   const params = useParams();
   const offer = offers.find((item) => item.id === Number(params.id));
 

@@ -1,6 +1,6 @@
 import { OfferType } from '../../types';
 import OfferCard from '../offer-card/offer-card';
-import { ONE_ELEMENT } from './near-places.const';
+import { MAX_NEAR_PLACES_COUNT, MIN_NEAR_PLACES_COUNT, ONE_ELEMENT } from './near-places.const';
 
 type NearPlacesType = {
   offers: OfferType[];
@@ -24,7 +24,7 @@ export default function NearPlaces({
           Other {nearOffers.length > ONE_ELEMENT ? 'places' : 'place'} in the neighbourhood
         </h2>
         <div className="near-places__list places__list">
-          {nearOffers.map((offer) => (
+          {nearOffers.slice(MIN_NEAR_PLACES_COUNT, MAX_NEAR_PLACES_COUNT).map((offer) => (
             <OfferCard
               offer={offer}
               key={offer.id}

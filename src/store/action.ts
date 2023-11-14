@@ -1,10 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { CityNamesType, OfferType, ReviewType } from '../types';
+import { NameSpace } from '../const';
 
-export const changeCity = createAction<{ city: CityNamesType }>('changeCity');
-export const loadOffers = createAction<{ offers: OfferType[] }>('main/loadOffers');
-export const loadReviews = createAction<{ reviews: ReviewType[] }>('offer/loadReviews');
-export const addReview = createAction<{ review: ReviewType }>('addReview');
-export const loadFavorites = createAction<{ favorites: OfferType[] }>('favorites/loadFavorites');
-export const addFavorite = createAction<{ favoriteOffer: OfferType }>('addFavorite');
-export const removeFavorite = createAction<{ favoriteOffer: OfferType }>('removeFavorite');
+export const setActiveCity = createAction<{ city: CityNamesType }>(`${NameSpace.Offers}/setActiveCity`);
+export const addOffers = createAction<{ offers: OfferType[] }>(`${NameSpace.Offers}/addOffers`);
+export const addReviews = createAction<{ reviews: ReviewType[] }>(`${NameSpace.Reviews}/addReviews`);
+export const addNewReview = createAction<{ review: ReviewType }>(`${NameSpace.Reviews}/addNewReview`);
+export const addFavorites = createAction<{ favorites: OfferType[] }>(`${NameSpace.Favorites}/addFavorites`);
+export const addNewFavorite = createAction<{ favoriteOffer: OfferType }>(`${NameSpace.Favorites}/addNewFavorite`);
+export const removeFavorite = createAction<{ favoriteOffer: OfferType }>(`${NameSpace.Favorites}/removeFavorite`);

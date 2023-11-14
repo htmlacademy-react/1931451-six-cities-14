@@ -8,7 +8,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { LOGIN_CITY_LINK, LoginFormFields, USER_ADMIN } from './login-screen.const';
 import { LOCAL_STORAGE_KEY } from '../../const';
 import { useAppDispatch } from '../../hooks';
-import { changeCity } from '../../store/action';
+import { setActiveCity } from '../../store/action';
 
 type LocationType = {
   state: { from: AppRoute };
@@ -118,7 +118,7 @@ export default function LoginScreen(): JSX.Element {
             <div className="locations__item">
               <Link
                 className="locations__item-link"
-                onClick={() => dispatch(changeCity({ city: LOGIN_CITY_LINK }))}
+                onClick={() => dispatch(setActiveCity({ city: LOGIN_CITY_LINK }))}
                 to={AppRoute.Main}
               >
                 <span>{LOGIN_CITY_LINK}</span>

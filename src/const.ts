@@ -14,3 +14,11 @@ export const OffersSortMap = {
   HighPrice: 'Price: high to low',
   TopRated: 'Top rated first'
 };
+
+export enum NameSpace {
+  Offers = 'OFFERS',
+  // Offer = 'OFFER',
+  Favorites = 'FAVORITES',
+  Reviews = 'REVIEWS',
+  User = 'USER'
+}
