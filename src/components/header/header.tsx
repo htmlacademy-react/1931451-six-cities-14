@@ -1,32 +1,33 @@
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../types';
-import { useAuthorizationStatus } from '../../context/authorization-status';
+import { AppRoute } from '../../types';
 import { checkAuthorizationStatus } from '../../utils/utils';
 import { PRIVATE_ROUTES } from '../../const';
 import styles from './header.module.css';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { logoutAction } from '../../store/api-action';
 
 type HeaderProps = {
   isLoginScreen?: boolean;
 };
 
-export default function Header({
-  isLoginScreen,
-}: HeaderProps): JSX.Element {
+export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
   const favorites = useAppSelector((state) => state.favorites);
-  const { authorizationStatus, setAuthorizationStatus } = useAuthorizationStatus();
-  const isLogged = checkAuthorizationStatus(authorizationStatus);
+  const user = useAppSelector((state) => state.user);
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   const getStyleForNavLink = ({ isActive }: { isActive: boolean }): object =>
     isActive ? { pointerEvents: 'none' } : {};
 
   const handleClick = () => {
-    setAuthorizationStatus(AuthorizationStatus.NoAuth);
-    localStorage.clear();
+    dispatch(logoutAction());
 
-    if(PRIVATE_ROUTES.includes(pathname)) {
+    if (PRIVATE_ROUTES.includes(pathname)) {
       navigate(AppRoute.Main);
     }
   };
@@ -59,11 +60,17 @@ export default function Header({
                     to={AppRoute.Favorites}
                     style={getStyleForNavLink}
                   >
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                    <div
+                      className="header__avatar-wrapper user__avatar-wrapper"
+                      style={{ backgroundImage: user?.avatarUrl }}
+                    >
+                    </div>
                     <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com
+                      {user?.email}
                     </span>
-                    <span className="header__favorite-count">{favorites.length}</span>
+                    <span className="header__favorite-count">
+                      {favorites.length}
+                    </span>
                   </NavLink>
                 </li>
                 <li className="header__nav-item">
@@ -86,7 +93,7 @@ export default function Header({
                   <Link
                     className="header__nav-link header__nav-link--profile"
                     to={AppRoute.Login}
-                    state={{from: pathname}}
+                    state={{ from: pathname }}
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__login">Sign in</span>

@@ -1,9 +1,9 @@
 import ReviewsItem from '../../pages/offer-screen/reviews-item/reviews-item';
 import { ReviewType } from '../../types';
-import { useAuthorizationStatus } from '../../context/authorization-status';
 import ReviewsForm from '../reviews-form/reviews-form';
 import { checkAuthorizationStatus } from '../../utils/utils';
 import { MAX_REVIEWS_COUNT, MIN_REVIEWS_COUNT } from './reviews-list.const';
+import { useAppSelector } from '../../hooks';
 
 type ReviewsListProps = {
   reviews: ReviewType[];
@@ -12,7 +12,7 @@ type ReviewsListProps = {
 export default function ReviewsList({
   reviews,
 }: ReviewsListProps): JSX.Element {
-  const { authorizationStatus } = useAuthorizationStatus();
+  const { authorizationStatus } = useAppSelector((state) => state);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
   const reviewSorted = [...reviews]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())

@@ -2,9 +2,8 @@ import { ReviewType } from '../types';
 
 export const reviewsData: ReviewType[] = [
   {
-    id: 1,
+    id: '1',
     user: {
-      id: 14,
       isPro: true,
       name: 'Corey',
       avatarUrl: 'https://14.react.pages.academy/static/avatar/5.jpg',
@@ -15,9 +14,8 @@ export const reviewsData: ReviewType[] = [
     date: '2023-09-09T09:23:20.316Z',
   },
   {
-    id: 2,
+    id: '2',
     user: {
-      id: 13,
       isPro: false,
       name: 'Zak',
       avatarUrl: 'https://14.react.pages.academy/static/avatar/4.jpg',

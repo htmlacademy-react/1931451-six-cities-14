@@ -1,14 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../types';
-import { useAuthorizationStatus } from '../../context/authorization-status';
+import { AppRoute } from '../../types';
 import { checkAuthorizationStatus, setCapitalLetter } from '../../utils/utils';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { LOGIN_CITY_LINK, LoginFormFields, USER_ADMIN } from './login-screen.const';
-import { LOCAL_STORAGE_KEY } from '../../const';
-import { useAppDispatch } from '../../hooks';
+import { LOGIN_CITY_LINK, LoginFormFields } from './login-screen.const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setActiveCity } from '../../store/action';
+import { loginAction } from '../../store/api-action';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/ReactToastify.min.css';
 
 type LocationType = {
   state: { from: AppRoute };
@@ -16,12 +17,13 @@ type LocationType = {
 
 export default function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
-  const { authorizationStatus, setAuthorizationStatus } =
-    useAuthorizationStatus();
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
   const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   const navigate = useNavigate();
-  const { state } = useLocation() as LocationType; // TODO: Не получилось затипизировать без as
+  const { state } = useLocation() as LocationType;
 
   const [loginForm, setLoginForm] = useState({
     [LoginFormFields.Email]: '',
@@ -41,10 +43,9 @@ export default function LoginScreen(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    const { email, password } = loginForm;
-    if (email === password && password === USER_ADMIN) {
-      setAuthorizationStatus(AuthorizationStatus.Auth);
-      localStorage.setItem(LOCAL_STORAGE_KEY, AuthorizationStatus.Auth);
+    dispatch(loginAction(loginForm));
+
+    if (isLogged) {
       navigate(state.from, { replace: true });
     }
   };
@@ -56,6 +57,8 @@ export default function LoginScreen(): JSX.Element {
       </Helmet>
 
       <Header isLoginScreen />
+      <ToastContainer />;
+
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
@@ -75,8 +78,7 @@ export default function LoginScreen(): JSX.Element {
                 </label>
                 <input
                   className="login__input form__input"
-                  // type={LoginFormFields.Email}
-                  type="text" // FIXME: Временно передаю type='text' здесь конечно же email
+                  type={LoginFormFields.Email}
                   name={LoginFormFields.Email}
                   placeholder={setCapitalLetter(LoginFormFields.Email)}
                   required
@@ -118,7 +120,8 @@ export default function LoginScreen(): JSX.Element {
             <div className="locations__item">
               <Link
                 className="locations__item-link"
-                onClick={() => dispatch(setActiveCity({ city: LOGIN_CITY_LINK }))}
+                onClick={() =>
+                  dispatch(setActiveCity({ city: LOGIN_CITY_LINK }))}
                 to={AppRoute.Main}
               >
                 <span>{LOGIN_CITY_LINK}</span>
