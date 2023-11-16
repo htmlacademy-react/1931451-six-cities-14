@@ -4,12 +4,12 @@ import App from './components/app/app';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';
-import { AuthorizationStatusProvider } from './context/authorization-status';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { fetchOffersAction } from './store/api-action';
+import { checkAuthAction, fetchOffersAction } from './store/api-action';
 
 store.dispatch(fetchOffersAction());
+store.dispatch(checkAuthAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,9 +21,7 @@ root.render(
       <HelmetProvider>
         <BrowserRouter>
           <ScrollToTop />
-          <AuthorizationStatusProvider>
-            <App />
-          </AuthorizationStatusProvider>
+          <App />
         </BrowserRouter>
       </HelmetProvider>
     </Provider>

@@ -1,6 +1,6 @@
 import { CityType } from './city.type';
 import { LocationType } from './location.type';
-import { UserType } from './user.type';
+import { UserShortType } from './user.type';
 
 export type PreviewOfferType = {
   id: string;
@@ -20,6 +20,6 @@ export type OfferType = PreviewOfferType & {
   bedrooms: number;
   maxAdults: number;
   goods: string[];
-  host: UserType;
+  host: UserShortType;
   description: string;
 };

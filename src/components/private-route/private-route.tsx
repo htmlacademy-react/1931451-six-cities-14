@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { AppRoute } from '../../types';
-import { useAuthorizationStatus } from '../../context/authorization-status';
 import { checkAuthorizationStatus } from '../../utils/utils';
+import { useAppSelector } from '../../hooks';
 
 type PrivateRouteProps = {
   redirectTo: AppRoute;
@@ -12,7 +12,7 @@ export default function PrivateRoute({
   redirectTo,
   children
 }: PrivateRouteProps): JSX.Element {
-  const { authorizationStatus } = useAuthorizationStatus();
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   return isLogged ? children : <Navigate to={redirectTo}/>;

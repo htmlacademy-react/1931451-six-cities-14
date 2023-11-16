@@ -1,8 +1,25 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addFavorites, addNewFavorite, addNewReview, addReviews, loadOffers, removeFavorite, setActiveCity, setOffersLoadingStatus } from './action';
+import {
+  addFavorites,
+  addNewFavorite,
+  addNewReview,
+  addReviews,
+  loadOffers,
+  removeFavorite,
+  setActiveCity,
+  setAuthorizationStatus,
+  setOffersLoadingStatus,
+  setUser,
+} from './action';
 import { offersData } from '../mocks/offers.data';
-import { CityNamesType, OfferType, PreviewOfferType, ReviewType } from '../types';
-import { reviewsData } from '../mocks/reviews.data';
+import {
+  AuthorizationStatus,
+  CityNamesType,
+  OfferType,
+  PreviewOfferType,
+  ReviewType,
+  UserType,
+} from '../types';
 import { DEFAULT_CITY_NAME } from '../const';
 
 type InitialStateType = {
@@ -11,14 +28,18 @@ type InitialStateType = {
   reviews: ReviewType[];
   favorites: OfferType[];
   isOffersLoading: boolean;
+  authorizationStatus: AuthorizationStatus;
+  user: UserType | null;
 };
 
 const initialState: InitialStateType = {
   city: DEFAULT_CITY_NAME,
   offers: [],
-  reviews: reviewsData,
+  reviews: [],
   favorites: offersData.filter((offer) => offer.isFavorite),
-  isOffersLoading: false
+  isOffersLoading: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  user: null,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -42,9 +63,17 @@ export const reducer = createReducer(initialState, (builder) => {
       state.favorites.push(payload.favoriteOffer);
     })
     .addCase(removeFavorite, (state, { payload }) => {
-      state.favorites = state.favorites.filter((offer) => offer.id !== payload.favoriteOffer.id);
+      state.favorites = state.favorites.filter(
+        (offer) => offer.id !== payload.favoriteOffer.id
+      );
     })
-    .addCase(setOffersLoadingStatus, (state, {payload}) => {
+    .addCase(setOffersLoadingStatus, (state, { payload }) => {
       state.isOffersLoading = payload;
+    })
+    .addCase(setAuthorizationStatus, (state, { payload }) => {
+      state.authorizationStatus = payload;
+    })
+    .addCase(setUser, (state, { payload }) => {
+      state.user = payload;
     });
 });

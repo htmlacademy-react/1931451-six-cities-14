@@ -1,4 +1,3 @@
-export const USER_ADMIN = 'admin';
 export const LOGIN_CITY_LINK = 'Amsterdam';
 
 export const LoginFormFields = {

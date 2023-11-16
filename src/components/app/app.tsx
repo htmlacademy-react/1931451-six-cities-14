@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { AppRoute } from '../../types';
+import { AppRoute, AuthorizationStatus } from '../../types';
 import MainScreen from '../../pages/main-screen/main-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import FavoritesScreen from '../../pages/favorites/favorites-screen';
@@ -10,9 +10,10 @@ import { useAppSelector } from '../../hooks';
 import Spinner from '../spinner/spinner';
 
 function App(): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
 
-  if (isOffersLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersLoading) {
     return <Spinner />;
   }
 
