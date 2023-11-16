@@ -7,6 +7,9 @@ import ScrollToTop from './components/scroll-to-top/scroll-to-top';
 import { AuthorizationStatusProvider } from './context/authorization-status';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { fetchOffersAction } from './store/api-action';
+
+store.dispatch(fetchOffersAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -57,7 +57,7 @@ export const offersData: OfferType[] = [
       longitude: 4.336697,
       zoom: 16,
     },
-    id: 89,
+    id: '86974221-cc4a-4ac7-895f-786f44fa8689',
   },
   {
     city: {
@@ -107,7 +107,7 @@ export const offersData: OfferType[] = [
       longitude: 6.779314,
       zoom: 16,
     },
-    id: 1,
+    id: '86974221-cc4a-4ac7-895f-786f44fa861',
   },
   {
     city: {
@@ -157,7 +157,7 @@ export const offersData: OfferType[] = [
       longitude: 4.902976,
       zoom: 16,
     },
-    id: 2,
+    id: '86974221-cc4a-4ac7-895f-786f44fa862',
   },
   {
     city: {
@@ -218,7 +218,7 @@ export const offersData: OfferType[] = [
       longitude: 4.3376969999999995,
       zoom: 16,
     },
-    id: 3,
+    id: '86974221-cc4a-4ac7-895f-786f44fa863',
   },
   {
     city: {
@@ -273,7 +273,7 @@ export const offersData: OfferType[] = [
       longitude: 4.883976,
       zoom: 16,
     },
-    id: 4,
+    id: '86974221-cc4a-4ac7-895f-786f44fa864',
   },
   {
     city: {
@@ -331,7 +331,7 @@ export const offersData: OfferType[] = [
       longitude: 9.975654,
       zoom: 16,
     },
-    id: 5,
+    id: '86974221-cc4a-4ac7-895f-786f44fa865',
   },
   {
     city: {
@@ -389,7 +389,7 @@ export const offersData: OfferType[] = [
       longitude: 2.356499,
       zoom: 16,
     },
-    id: 32,
+    id: '86974221-cc4a-4ac7-895f-786f44fa8632',
   },
   {
     city: {
@@ -439,7 +439,7 @@ export const offersData: OfferType[] = [
       longitude: 2.330499,
       zoom: 16,
     },
-    id: 35,
+    id: '86974221-cc4a-4ac7-895f-786f44fa8635',
   },
   {
     city: {
@@ -495,7 +495,7 @@ export const offersData: OfferType[] = [
       longitude: 6.956974,
       zoom: 16,
     },
-    id: 53,
+    id: '86974221-cc4a-4ac7-895f-786f44fa8653',
   },
   {
     city: {
@@ -545,7 +545,7 @@ export const offersData: OfferType[] = [
       longitude: 6.967974,
       zoom: 16,
     },
-    id: 87,
+    id: '86974221-cc4a-4ac7-895f-786f44fa8687',
   },
   {
     city: {
@@ -602,7 +602,7 @@ export const offersData: OfferType[] = [
       longitude: 4.886976,
       zoom: 16,
     },
-    id: 75,
+    id: '86974221-cc4a-4ac7-895f-786f44fa8675',
   },
   {
     city: {
@@ -658,6 +658,6 @@ export const offersData: OfferType[] = [
       longitude: 4.908976,
       zoom: 16,
     },
-    id: 77,
+    id: '86974221-cc4a-4ac7-895f-786f44fa8677',
   },
 ];

@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useMapWithPoints } from '../../hooks';
-import { OfferType } from '../../types';
+import { PreviewOfferType } from '../../types';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  offers: OfferType[];
+  offers: PreviewOfferType[];
   className: string;
-  activeOffer?: OfferType | null;
+  activeOffer?: PreviewOfferType | null;
   isNeedZoom?: boolean;
 };
 

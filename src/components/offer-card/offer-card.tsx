@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { OfferType } from '../../types';
+import { PreviewOfferType } from '../../types';
 import {
   getPathToOffer,
   getPercentRating,
@@ -8,8 +8,8 @@ import {
 import { Link } from 'react-router-dom';
 
 type OfferCardProps = {
-  offer: OfferType;
-  onActiveOffer?: (offer: OfferType | null) => void;
+  offer: PreviewOfferType;
+  onActiveOffer?: (offer: PreviewOfferType | null) => void;
   className?: string;
 };
 
