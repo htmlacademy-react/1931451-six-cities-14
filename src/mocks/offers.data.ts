@@ -45,7 +45,6 @@ export const offersData: OfferType[] = [
       'Fridge',
     ],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -95,7 +94,6 @@ export const offersData: OfferType[] = [
     price: 142,
     goods: ['Laptop friendly workspace', 'Breakfast'],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -145,7 +143,6 @@ export const offersData: OfferType[] = [
     price: 144,
     goods: ['Laptop friendly workspace', 'Breakfast', 'Washer'],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -206,7 +203,6 @@ export const offersData: OfferType[] = [
       'Dishwasher',
     ],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -261,7 +257,6 @@ export const offersData: OfferType[] = [
       'Air conditioning',
     ],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -319,7 +314,6 @@ export const offersData: OfferType[] = [
       'Washer',
     ],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -377,7 +371,6 @@ export const offersData: OfferType[] = [
       'Towels',
     ],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -427,7 +420,6 @@ export const offersData: OfferType[] = [
     price: 138,
     goods: ['Laptop friendly workspace', 'Breakfast'],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -483,7 +475,6 @@ export const offersData: OfferType[] = [
       'Breakfast',
     ],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -533,7 +524,6 @@ export const offersData: OfferType[] = [
     price: 200,
     goods: ['Breakfast', 'Laptop friendly workspace'],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -590,7 +580,6 @@ export const offersData: OfferType[] = [
       'Towels',
     ],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -646,7 +635,6 @@ export const offersData: OfferType[] = [
       'Breakfast',
     ],
     host: {
-      id: 25,
       name: 'Angelina',
       isPro: true,
       avatarUrl: 'img/avatar-angelina.jpg',
