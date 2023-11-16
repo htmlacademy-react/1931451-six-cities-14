@@ -7,6 +7,7 @@ export const LOCAL_STORAGE_KEY = 'userStatus';
 export const AUTH_STATUS = isAuthorizationStatus((localStorage.getItem(LOCAL_STORAGE_KEY))) || AuthorizationStatus.NoAuth;
 export const PRIVATE_ROUTES: readonly string[] = ['/favorites'];
 export const CITY_NAMES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+export const DEFAULT_CITY_NAME = CITY_NAMES[0];
 
 export const OffersSortMap = {
   Popular: 'Popular',
@@ -20,5 +21,6 @@ export enum NameSpace {
   // Offer = 'OFFER',
   Favorites = 'FAVORITES',
   Reviews = 'REVIEWS',
-  User = 'USER'
+  User = 'USER',
+  Data = 'DATA'
 }

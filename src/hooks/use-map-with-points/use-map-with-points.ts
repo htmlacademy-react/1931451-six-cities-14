@@ -1,15 +1,15 @@
 import { Map, TileLayer, Marker, layerGroup } from 'leaflet';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CityType, OfferType } from '../../types';
+import { CityType, PreviewOfferType } from '../../types';
 import { TileLayerSetting, currentCustomIcon, defaultCustomIcon } from './use-map-with-points.const';
 import { getPathToOffer } from '../../utils/utils';
 
 export function useMapWithPoints(
   mapRef: MutableRefObject<HTMLElement | null>,
   city: CityType,
-  points: OfferType[],
-  activePoint?: OfferType | null
+  points: PreviewOfferType[],
+  activePoint?: PreviewOfferType | null
 ) {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef(false);

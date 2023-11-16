@@ -1,9 +1,9 @@
-import { OfferType } from '../../types';
+import { PreviewOfferType } from '../../types';
 import OfferCard from '../offer-card/offer-card';
 
 type OffersListProps = {
-  offers: OfferType[];
-  onActiveOffer: (offer: OfferType | null) => void;
+  offers: PreviewOfferType[];
+  onActiveOffer: (offer: PreviewOfferType | null) => void;
 };
 
 export default function OffersList({

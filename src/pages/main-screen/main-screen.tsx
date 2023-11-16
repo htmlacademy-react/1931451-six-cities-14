@@ -24,7 +24,7 @@ export default function MainScreen(): JSX.Element {
       <Header />
       <main
         className={classNames('page__main--index', {
-          'page__main--index-empty': Boolean(!offers.length),
+          'page__main--index-empty': Boolean(!filteredOffersByCity.length),
         })}
       >
         <LocationsTabs

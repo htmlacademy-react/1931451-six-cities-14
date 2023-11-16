@@ -3,8 +3,8 @@ import {
   AppRoute,
   AuthorizationStatus,
   AuthorizationStatusType,
-  OfferType,
   OffersSortMapType,
+  PreviewOfferType,
 } from '../types';
 
 export const getPercentRating = (value: number): string =>
@@ -27,10 +27,10 @@ export const isAuthorizationStatus = (str: string | null) => {
 
 export const addPluralEnding = (count: number) => (count !== 1 ? 's' : '');
 
-export const getPathToOffer = (id: number) =>
-  AppRoute.Offer.replace(':id', String(id));
+export const getPathToOffer = (id: string) =>
+  AppRoute.Offer.replace(':offerId', id);
 
-export const getSortedOffers = (arr: OfferType[], type: OffersSortMapType | null) => {
+export const getSortedOffers = (arr: PreviewOfferType[], type: OffersSortMapType | null) => {
   switch (type) {
     case 'LowPrice':
       return [...arr].sort((a, b) => a.price - b.price);

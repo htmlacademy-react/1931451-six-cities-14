@@ -1,4 +1,4 @@
-import { OfferType, OffersSortMapType } from '../../../types';
+import { OffersSortMapType, PreviewOfferType } from '../../../types';
 import { Map } from '../../../components/map/map';
 import OffersList from '../../../components/offers-list/offers-list';
 import OffersSort from '../../../components/offers-sort/offers-sort';
@@ -6,11 +6,11 @@ import { useState } from 'react';
 import { addPluralEnding, getSortedOffers } from '../../../utils/utils';
 
 type CitiesProps = {
-  offers: OfferType[];
+  offers: PreviewOfferType[];
 };
 
 export default function Cities({ offers }: CitiesProps): JSX.Element {
-  const [activeOffer, setActiveOffer] = useState<OfferType | null>(null);
+  const [activeOffer, setActiveOffer] = useState<PreviewOfferType | null>(null);
   const [sortType, setSortType] = useState<OffersSortMapType | null>(null);
 
   return offers.length ? (
