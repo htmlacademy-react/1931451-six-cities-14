@@ -1,30 +1,22 @@
-import { OfferType } from '../../types';
+import { PreviewOfferType } from '../../types';
 import OfferCard from '../offer-card/offer-card';
 import { MAX_NEAR_PLACES_COUNT, MIN_NEAR_PLACES_COUNT, ONE_ELEMENT } from './near-places.const';
 
 type NearPlacesType = {
-  offers: OfferType[];
-  currentOffer: OfferType;
+  offers: PreviewOfferType[];
 };
 
 export default function NearPlaces({
   offers,
-  currentOffer,
 }: NearPlacesType): JSX.Element {
-  const nearOffers = offers.filter((item) => {
-    if (item.id !== currentOffer.id) {
-      return item.city.name === currentOffer.city.name ? item : null;
-    }
-  });
-
-  return nearOffers.length ? (
+  return offers.length ? (
     <div className="container">
       <section className="near-places places">
         <h2 className="near-places__title">
-          Other {nearOffers.length > ONE_ELEMENT ? 'places' : 'place'} in the neighbourhood
+          Other {offers.length > ONE_ELEMENT ? 'places' : 'place'} in the neighbourhood
         </h2>
         <div className="near-places__list places__list">
-          {nearOffers.slice(MIN_NEAR_PLACES_COUNT, MAX_NEAR_PLACES_COUNT).map((offer) => (
+          {offers.slice(MIN_NEAR_PLACES_COUNT, MAX_NEAR_PLACES_COUNT).map((offer) => (
             <OfferCard
               offer={offer}
               key={offer.id}

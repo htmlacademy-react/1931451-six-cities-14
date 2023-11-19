@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
-import { ReviewFormType } from './reviews-form.type';
 import { MAX_RATING } from '../../const';
 import {
   MAX_COMMENT_LENGTH,
@@ -8,16 +7,28 @@ import {
   ReviewFormFields,
   ratings,
 } from './reviews-form.const';
+import { OfferType } from '../../types';
+import { useAppDispatch } from '../../hooks';
+import { fetchAddReviewAction } from '../../store/api-action';
 
-export default function ReviewsForm(): JSX.Element {
+type ReviewsFormProps = {
+  offerId?: OfferType['id'];
+};
+
+export default function ReviewsForm({
+  offerId,
+}: ReviewsFormProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const [isFormDisabled, setIsFormDisabled] = useState(false);
-  const [reviewForm, setReviewForm] = useState<ReviewFormType>({
+  const [reviewForm, setReviewForm] = useState({
     [ReviewFormFields.Comment]: '',
     [ReviewFormFields.Rating]: RATING_NOT_SELECTED,
   });
   const isValid =
-    reviewForm.comment.replace(/\s/g, ' ').trim().length >= MIN_COMMENT_LENGTH &&
-    reviewForm.comment.replace(/\s/g, ' ').trim().length <= MAX_COMMENT_LENGTH &&
+    reviewForm.comment.replace(/\s/g, ' ').trim().length >=
+      MIN_COMMENT_LENGTH &&
+    reviewForm.comment.replace(/\s/g, ' ').trim().length <=
+      MAX_COMMENT_LENGTH &&
     reviewForm.rating !== RATING_NOT_SELECTED;
 
   const resetForm = () => {
@@ -48,10 +59,11 @@ export default function ReviewsForm(): JSX.Element {
 
     setIsFormDisabled(true);
 
-    // FIXME: Удалить setTimeout
-    setTimeout(() => {
-      resetForm();
-    }, 1500);
+    if (offerId) {
+      dispatch(fetchAddReviewAction([offerId, reviewForm]));
+    }
+
+    resetForm();
   };
 
   return (
