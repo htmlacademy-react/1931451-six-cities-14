@@ -1,5 +1,5 @@
 import ReviewsItem from '../../pages/offer-screen/reviews-item/reviews-item';
-import { ReviewType } from '../../types';
+import { OfferType, ReviewType } from '../../types';
 import ReviewsForm from '../reviews-form/reviews-form';
 import { checkAuthorizationStatus } from '../../utils/utils';
 import { MAX_REVIEWS_COUNT, MIN_REVIEWS_COUNT } from './reviews-list.const';
@@ -7,12 +7,16 @@ import { useAppSelector } from '../../hooks';
 
 type ReviewsListProps = {
   reviews: ReviewType[];
+  offerId?: OfferType['id'];
 };
 
 export default function ReviewsList({
   reviews,
+  offerId,
 }: ReviewsListProps): JSX.Element {
-  const { authorizationStatus } = useAppSelector((state) => state);
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
   const isLogged = checkAuthorizationStatus(authorizationStatus);
   const reviewSorted = [...reviews]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -28,7 +32,7 @@ export default function ReviewsList({
           <ReviewsItem review={review} key={review.id} />
         ))}
       </ul>
-      {isLogged && <ReviewsForm />}
+      {isLogged && <ReviewsForm offerId={offerId} />}
     </section>
   );
 }

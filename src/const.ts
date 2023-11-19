@@ -13,10 +13,8 @@ export const OffersSortMap = {
 
 export enum NameSpace {
   Offers = 'OFFERS',
-  // Offer = 'OFFER',
+  Offer = 'OFFER',
   Favorites = 'FAVORITES',
   Reviews = 'REVIEWS',
-  User = 'USER',
-  Data = 'DATA',
-  Error = 'ERROR'
+  User = 'USER'
 }
