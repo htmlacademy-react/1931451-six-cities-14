@@ -1,10 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatchType, StateType } from '../types/state';
 import { AxiosInstance } from 'axios';
 import { NameSpace } from '../const';
 import {
   AuthDataType,
-  AuthorizationStatus,
   OfferType,
   PreviewOfferType,
   ReviewShortType,
@@ -12,127 +10,98 @@ import {
   UserType,
 } from '../types';
 import { APIRoute } from '../types/api-route.enum';
-import {
-  addNewReview,
-  addReviews,
-  loadNearPlaces,
-  loadOffers,
-  setAuthorizationStatus,
-  setOffer,
-  setOfferLoadingStatus,
-  setOffersLoadingStatus,
-  setUser,
-} from './action';
 import { dropToken, saveToken } from '../services/token';
 
 type AsyncActionType = {
-  dispatch: AppDispatchType;
-  state: StateType;
   extra: AxiosInstance;
 };
 
 export const fetchOffersAction = createAsyncThunk<
-  void,
+  PreviewOfferType[],
   undefined,
   AsyncActionType
->(`${NameSpace.Offers}/fetchOffers`, async (_arg, { dispatch, extra: api }) => {
-  try {
-    dispatch(setOffersLoadingStatus(true));
-    const { data } = await api.get<PreviewOfferType[]>(APIRoute.Offers);
-    dispatch(loadOffers(data));
-  } finally {
-    dispatch(setOffersLoadingStatus(false));
-  }
+>(`${NameSpace.Offers}/fetchOffers`, async (_arg, { extra: api }) => {
+  const { data } = await api.get<PreviewOfferType[]>(APIRoute.Offers);
+
+  return data;
 });
 
+export const checkAuthAction = createAsyncThunk<
+  UserType,
+  undefined,
+  AsyncActionType
+>(`${NameSpace.User}/checkAuth`, async (_arg, { extra: api }) => {
+  const { data } = await api.get<UserType>(APIRoute.Login);
+
+  return data;
+});
+
+export const loginAction = createAsyncThunk<
+  UserType,
+  AuthDataType,
+  AsyncActionType
+>(`${NameSpace.User}/login`, async ({ email, password }, { extra: api }) => {
+  const { data } = await api.post<UserType>(APIRoute.Login, {
+    email,
+    password,
+  });
+  const { token } = data;
+  saveToken(token); //TODO: Стоит ли перенести сохранение токена в slice?
+
+  return data;
+});
+
+export const logoutAction = createAsyncThunk<void, undefined, AsyncActionType>(
+  `${NameSpace.User}/logout`,
+  async (_arg, { extra: api }) => {
+    await api.delete(APIRoute.Logout);
+    dropToken(); //TODO: Стоит ли перенести сохранение токена в slice?
+  }
+);
+
 export const fetchOfferAction = createAsyncThunk<
-  void,
+  OfferType,
   OfferType['id'],
   AsyncActionType
->(`${NameSpace.Offer}`, async (offerId, { dispatch, extra: api }) => {
-  try {
-    setOfferLoadingStatus(true);
-    const { data } = await api.get<OfferType>(`${APIRoute.Offers}/${offerId}`);
-    dispatch(setOffer(data));
-  } finally {
-    dispatch(setOffersLoadingStatus(false));
-  }
+>(`${NameSpace.Offer}`, async (offerId, { extra: api }) => {
+  const { data } = await api.get<OfferType>(`${APIRoute.Offers}/${offerId}`);
+
+  return data;
 });
 
 export const fetchReviewsAction = createAsyncThunk<
-  void,
+  ReviewType[],
   OfferType['id'],
   AsyncActionType
->(`${NameSpace.Offer}`, async (offerId, { dispatch, extra: api }) => {
+>(`${NameSpace.Reviews}`, async (offerId, { extra: api }) => {
   const { data } = await api.get<ReviewType[]>(
     `${APIRoute.Comments}/${offerId}`
   );
-  dispatch(addReviews(data));
+
+  return data;
 });
 
 export const fetchAddReviewAction = createAsyncThunk<
-  void,
+  ReviewType,
   [OfferType['id'], ReviewShortType],
   AsyncActionType
->(`${NameSpace.Offer}`, async ([offerId, formData], { dispatch, extra: api }) => {
-  const { data } = await api.post<ReviewType>(`${APIRoute.Comments}/${offerId}`, formData);
-  dispatch(addNewReview(data));
+>(`${NameSpace.Reviews}`, async ([offerId, formData], { extra: api }) => {
+  const { data } = await api.post<ReviewType>(
+    `${APIRoute.Comments}/${offerId}`,
+    formData
+  );
+
+  return data;
 });
 
 export const fetchNearPlacesAction = createAsyncThunk<
-  void,
+  PreviewOfferType[],
   OfferType['id'],
   AsyncActionType
->(`${NameSpace.Offer}`, async (offerId, { dispatch, extra: api }) => {
+>(`${NameSpace.NearPlaces}`, async (offerId, { extra: api }) => {
   const { data } = await api.get<PreviewOfferType[]>(
     `${APIRoute.Offers}/${offerId}${APIRoute.NearPlaces}`
   );
 
-  dispatch(loadNearPlaces(data));
+  return data;
 });
-
-export const checkAuthAction = createAsyncThunk<
-  void,
-  undefined,
-  AsyncActionType
->(`${NameSpace.User}/checkAuth`, async (_arg, { dispatch, extra: api }) => {
-  try {
-    const { data } = await api.get<UserType>(APIRoute.Login);
-    dispatch(setUser(data));
-    dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
-  } catch {
-    dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
-  }
-});
-
-export const loginAction = createAsyncThunk<
-  void,
-  AuthDataType,
-  AsyncActionType
->(
-  `${NameSpace.User}/login`,
-  async ({ email, password }, { dispatch, extra: api }) => {
-    try {
-      const { data } = await api.post<UserType>(APIRoute.Login, {
-        email,
-        password,
-      });
-      const { token } = data;
-      saveToken(token);
-      dispatch(setUser(data));
-      dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
-    } catch {
-      dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
-    }
-  }
-);
-
-export const logoutAction = createAsyncThunk<void, undefined, AsyncActionType>(
-  `${NameSpace.User}/logout`,
-  async (_arg, { dispatch, extra: api }) => {
-    await api.delete(APIRoute.Logout);
-    dropToken();
-    dispatch(setUser(null));
-    dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
-  }
-);

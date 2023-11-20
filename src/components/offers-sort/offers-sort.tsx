@@ -56,7 +56,7 @@ export default function OffersSort({
             key={value}
             onClick={() => {
               setActiveOption(value);
-              onSortType(type as OffersSortMapType); // TODO: Не работает даже если сделать OffersSortMap константным обьектом
+              onSortType(type as OffersSortMapType);
             }}
           >
             {value}

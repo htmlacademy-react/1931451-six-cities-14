@@ -21,6 +21,7 @@ export default function NearPlaces({
               offer={offer}
               key={offer.id}
               className="near-places__card"
+              isNeedUpdate={false}
             />
           ))}
         </div>

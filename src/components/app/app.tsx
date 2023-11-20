@@ -1,20 +1,22 @@
 import { Routes, Route } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types';
 import MainScreen from '../../pages/main-screen/main-screen';
-import LoginScreen from '../../pages/login-screen/login-screen';
-import FavoritesScreen from '../../pages/favorites/favorites-screen';
-import OfferScreen from '../../pages/offer-screen/offer-screen';
+// import LoginScreen from '../../pages/login-screen/login-screen';
+// import FavoritesScreen from '../../pages/favorites/favorites-screen';
+// import OfferScreen from '../../pages/offer-screen/offer-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
-import PrivateRoute from '../private-route/private-route';
+// import PrivateRoute from '../private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import Spinner from '../spinner/spinner';
 import { checkAuthAction, fetchOffersAction } from '../../store/api-action';
 import { useEffect } from 'react';
 import { store } from '../../store';
+import { getAuthorizationStatus } from '../../store/slices/user/selectors';
+import { getOffersLoadingStatus } from '../../store/slices/offers/selectors';
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isOffersLoading = useAppSelector(getOffersLoadingStatus);
 
   useEffect(() => {
     store.dispatch(fetchOffersAction());
@@ -28,7 +30,7 @@ function App(): JSX.Element {
   return (
     <Routes>
       <Route path={AppRoute.Main} element={<MainScreen />} />
-      <Route path={AppRoute.Login} element={<LoginScreen />} />
+      {/* <Route path={AppRoute.Login} element={<LoginScreen />} />
       <Route path={AppRoute.Offer} element={<OfferScreen />} />
       <Route
         path={AppRoute.Favorites}
@@ -37,7 +39,7 @@ function App(): JSX.Element {
             <FavoritesScreen />
           </PrivateRoute>
         }
-      />
+      /> */}
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
   );

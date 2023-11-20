@@ -4,6 +4,7 @@ import ReviewsForm from '../reviews-form/reviews-form';
 import { checkAuthorizationStatus } from '../../utils/utils';
 import { MAX_REVIEWS_COUNT, MIN_REVIEWS_COUNT } from './reviews-list.const';
 import { useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/slices/user/selectors';
 
 type ReviewsListProps = {
   reviews: ReviewType[];
@@ -14,9 +15,7 @@ export default function ReviewsList({
   reviews,
   offerId,
 }: ReviewsListProps): JSX.Element {
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
   const reviewSorted = [...reviews]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())

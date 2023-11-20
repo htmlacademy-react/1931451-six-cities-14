@@ -6,10 +6,11 @@ import { checkAuthorizationStatus, setCapitalLetter } from '../../utils/utils';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { LOGIN_CITY_LINK, LoginFormFields } from './login-screen.const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setActiveCity } from '../../store/action';
 import { loginAction } from '../../store/api-action';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.min.css';
+import { getAuthorizationStatus } from '../../store/slices/user/selectors';
+import { setActiveCity } from '../../store/slices/offers/offers';
 
 type LocationType = {
   state: { from: AppRoute };
@@ -17,9 +18,7 @@ type LocationType = {
 
 export default function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   const navigate = useNavigate();
@@ -55,10 +54,8 @@ export default function LoginScreen(): JSX.Element {
       <Helmet>
         <title>6 Cities: Login</title>
       </Helmet>
-
       <Header isLoginScreen />
       <ToastContainer />;
-
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
@@ -120,8 +117,7 @@ export default function LoginScreen(): JSX.Element {
             <div className="locations__item">
               <Link
                 className="locations__item-link"
-                onClick={() =>
-                  dispatch(setActiveCity({ city: LOGIN_CITY_LINK }))}
+                onClick={() => dispatch(setActiveCity(LOGIN_CITY_LINK))}
                 to={AppRoute.Main}
               >
                 <span>{LOGIN_CITY_LINK}</span>

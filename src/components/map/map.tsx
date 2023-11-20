@@ -1,22 +1,22 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { useMapWithPoints } from '../../hooks';
+import { useAppSelector, useMapWithPoints } from '../../hooks';
 import { PreviewOfferType } from '../../types';
 import 'leaflet/dist/leaflet.css';
+import { getActiveOffer } from '../../store/slices/offer/selectors';
 
 type MapProps = {
   offers: PreviewOfferType[];
   className: string;
-  activeOffer?: PreviewOfferType | null;
   isNeedZoom?: boolean;
 };
 
 export const Map: React.FC<MapProps> = ({
   className,
   offers,
-  activeOffer,
-  isNeedZoom,
+  isNeedZoom
 }) => {
+  const activeOffer = useAppSelector(getActiveOffer);
   const { city } = offers[0];
   const mapRef = useRef<HTMLElement | null>(null);
   const map = useMapWithPoints(mapRef, city, offers, activeOffer);

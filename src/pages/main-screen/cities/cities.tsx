@@ -10,7 +10,6 @@ type CitiesProps = {
 };
 
 export default function Cities({ offers }: CitiesProps): JSX.Element {
-  const [activeOffer, setActiveOffer] = useState<PreviewOfferType | null>(null);
   const [sortType, setSortType] = useState<OffersSortMapType | null>(null);
 
   return offers.length ? (
@@ -24,11 +23,10 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
           <OffersSort onSortType={(data: OffersSortMapType) => setSortType(data)} />
           <OffersList
             offers={getSortedOffers(offers, sortType)}
-            onActiveOffer={(offer) => setActiveOffer(offer)}
           />
         </section>
         <div className="cities__right-section">
-          <Map className="cities__map" offers={offers} activeOffer={activeOffer} />
+          <Map className="cities__map" offers={offers} />
         </div>
       </div>
     </div>
