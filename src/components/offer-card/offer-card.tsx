@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { memo } from 'react';
 import classNames from 'classnames';
 import { PreviewOfferType } from '../../types';
@@ -78,4 +77,5 @@ function OfferCard({
   );
 }
 
-export default memo(OfferCard);
+const OfferCardMemo = memo(OfferCard);
+export default OfferCardMemo;
