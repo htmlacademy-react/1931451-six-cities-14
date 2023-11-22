@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { OfferType } from '../../../types';
+import { PreviewOfferType } from '../../../types';
 import { getPathToOffer, getPercentRating, setCapitalLetter } from '../../../utils/utils';
 
 type FavoritesCardProps = {
-  offer: OfferType;
+  offer: PreviewOfferType;
 };
 
 export default function FavoritesCard({

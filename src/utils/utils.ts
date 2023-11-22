@@ -1,4 +1,4 @@
-import { MAX_PERCENT, MAX_RATING } from '../const';
+import { DEBOUNCE_INTERVAL, MAX_PERCENT, MAX_RATING } from '../const';
 import {
   AppRoute,
   AuthorizationStatus,
@@ -30,7 +30,10 @@ export const addPluralEnding = (count: number) => (count !== 1 ? 's' : '');
 export const getPathToOffer = (id: string) =>
   AppRoute.Offer.replace(':offerId', id);
 
-export const sortingOffers = (arr: PreviewOfferType[], type: OffersSortMapType | null) => {
+export const sortingOffers = (
+  arr: PreviewOfferType[],
+  type: OffersSortMapType | null
+) => {
   switch (type) {
     case 'LowPrice':
       return [...arr].sort((a, b) => a.price - b.price);
@@ -41,4 +44,17 @@ export const sortingOffers = (arr: PreviewOfferType[], type: OffersSortMapType |
     default:
       return arr;
   }
+};
+
+export const debounce = <T extends (...args: unknown[]) => void>(
+  callback: T,
+  timeoutDelay: number = DEBOUNCE_INTERVAL
+): ((...args: Parameters<T>) => void) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+  return (...rest: Parameters<T>): void => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
 };

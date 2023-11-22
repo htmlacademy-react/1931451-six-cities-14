@@ -19,13 +19,17 @@ import {
   fetchReviewsAction,
 } from '../../store/api-action';
 import { getOffers } from '../../store/slices/offers/selectors';
-import { getOffer, getOfferLoadingStatus } from '../../store/slices/offer/selectors';
+import {
+  getOffer,
+  getOfferLoadingStatus,
+} from '../../store/slices/offer/selectors';
 import { getReviews } from '../../store/slices/reviews/selectors';
 import { dropOffer } from '../../store/slices/offer/offer';
 import { dropReviews } from '../../store/slices/reviews/reviews';
 import { getNearPlaces } from '../../store/slices/near-places/selectors';
 import { dropNearPlaces } from '../../store/slices/near-places/near-places';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import classNames from 'classnames';
 
 export default function OfferScreen(): JSX.Element {
   const { offerId } = useParams();
@@ -71,6 +75,7 @@ export default function OfferScreen(): JSX.Element {
     price,
     goods,
     description,
+    isFavorite
   } = offer;
 
   const { avatarUrl, name, isPro } = offer.host;
@@ -104,7 +109,12 @@ export default function OfferScreen(): JSX.Element {
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{title}</h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button
+                  className={classNames('offer__bookmark-button button', {
+                    'offer__bookmark-button--active': isFavorite,
+                  })}
+                  type="button"
+                >
                   <svg className="offer__bookmark-icon" width={31} height={33}>
                     <use xlinkHref="#icon-bookmark" />
                   </svg>

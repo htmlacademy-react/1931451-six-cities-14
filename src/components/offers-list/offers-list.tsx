@@ -18,7 +18,7 @@ function OffersList({
           onActiveOffer={onActiveOffer}
           offer={offer}
           key={offer.id}
-          className="cities__card"
+          className='cities'
         />
       ))}
     </div>

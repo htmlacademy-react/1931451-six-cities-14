@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { DEFAULT_CITY_NAME, NameSpace } from '../../../const';
-import { CityNamesType, PreviewOfferType } from '../../../types';
+import { CityNamesType, OfferType, PreviewOfferType } from '../../../types';
 import { fetchOffersAction } from '../../api-action';
 
 type OffersStateType = {
@@ -22,6 +22,12 @@ export const offersSlice = createSlice({
     setActiveCity: (state, { payload }: PayloadAction<CityNamesType>) => {
       state.city = payload;
     },
+    setFavorite: (state, { payload }: PayloadAction<OfferType['id']>) => {
+      const offerToChange = state.offers.find((offer) => offer.id === payload);
+      if (offerToChange) {
+        offerToChange.isFavorite = !offerToChange.isFavorite;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -38,4 +44,4 @@ export const offersSlice = createSlice({
   },
 });
 
-export const { setActiveCity } = offersSlice.actions;
+export const { setActiveCity, setFavorite } = offersSlice.actions;

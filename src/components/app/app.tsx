@@ -8,7 +8,11 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import Spinner from '../spinner/spinner';
-import { checkAuthAction, fetchOffersAction } from '../../store/api-action';
+import {
+  checkAuthAction,
+  fetchFavoritesAction,
+  fetchOffersAction,
+} from '../../store/api-action';
 import { useEffect } from 'react';
 import { store } from '../../store';
 import { getAuthorizationStatus } from '../../store/slices/user/selectors';
@@ -19,9 +23,17 @@ function App(): JSX.Element {
   const isOffersLoading = useAppSelector(getOffersLoadingStatus);
 
   useEffect(() => {
-    store.dispatch(fetchOffersAction());
     store.dispatch(checkAuthAction());
   }, []);
+
+  useEffect(() => {
+    store.dispatch(fetchOffersAction());
+
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      store.dispatch(fetchFavoritesAction());
+    }
+
+  }, [authorizationStatus]);
 
   if (authorizationStatus === AuthorizationStatus.Unknown || isOffersLoading) {
     return <Spinner />;
