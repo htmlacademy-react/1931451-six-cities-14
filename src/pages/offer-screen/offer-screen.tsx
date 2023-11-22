@@ -18,13 +18,22 @@ import {
   fetchOfferAction,
   fetchReviewsAction,
 } from '../../store/api-action';
-import { addReviews, loadNearPlaces, setOffer } from '../../store/action';
+import { getOffers } from '../../store/slices/offers/selectors';
+import { getOffer, getOfferLoadingStatus } from '../../store/slices/offer/selectors';
+import { getReviews } from '../../store/slices/reviews/selectors';
+import { dropOffer } from '../../store/slices/offer/offer';
+import { dropReviews } from '../../store/slices/reviews/reviews';
+import { getNearPlaces } from '../../store/slices/near-places/selectors';
+import { dropNearPlaces } from '../../store/slices/near-places/near-places';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
-export default function OfferScreen(): JSX.Element | null {
+export default function OfferScreen(): JSX.Element {
   const { offerId } = useParams();
-  const { offers, offer, reviews, nearPlaces, isOfferLoading } = useAppSelector(
-    (store) => store
-  );
+  const offers = useAppSelector(getOffers);
+  const offer = useAppSelector(getOffer);
+  const isOfferLoading = useAppSelector(getOfferLoadingStatus);
+  const reviews = useAppSelector(getReviews);
+  const nearPlaces = useAppSelector(getNearPlaces);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,9 +46,9 @@ export default function OfferScreen(): JSX.Element | null {
     dispatch(fetchNearPlacesAction(offerId));
 
     return () => {
-      dispatch(setOffer(null));
-      dispatch(addReviews([]));
-      dispatch(loadNearPlaces([]));
+      dispatch(dropOffer());
+      dispatch(dropReviews());
+      dispatch(dropNearPlaces());
     };
   }, [dispatch, offerId]);
 
@@ -48,7 +57,7 @@ export default function OfferScreen(): JSX.Element | null {
   }
 
   if (!offer) {
-    return null;
+    return <NotFoundScreen />;
   }
 
   const {
@@ -161,8 +170,8 @@ export default function OfferScreen(): JSX.Element | null {
           <Map
             className="offer__map"
             offers={offers}
-            activeOffer={offer}
             isNeedZoom
+            activeOffer={offer}
           />
         </section>
         <NearPlaces offers={nearPlaces} />

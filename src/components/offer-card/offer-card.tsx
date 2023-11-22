@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import classNames from 'classnames';
 import { PreviewOfferType } from '../../types';
 import {
@@ -13,10 +14,10 @@ type OfferCardProps = {
   className?: string;
 };
 
-export default function OfferCard({
+function OfferCard({
   offer,
   className,
-  onActiveOffer,
+  onActiveOffer
 }: OfferCardProps): JSX.Element {
   const { isPremium, previewImage, price, rating, title, type, id } = offer;
   const path = getPathToOffer(id);
@@ -75,3 +76,6 @@ export default function OfferCard({
     </article>
   );
 }
+
+const OfferCardMemo = memo(OfferCard);
+export default OfferCardMemo;

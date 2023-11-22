@@ -5,17 +5,16 @@ import { PRIVATE_ROUTES } from '../../const';
 import styles from './header.module.css';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-action';
+import { getAuthorizationStatus, getUser } from '../../store/slices/user/selectors';
 
 type HeaderProps = {
   isLoginScreen?: boolean;
 };
 
 export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
-  const favorites = useAppSelector((state) => state.favorites);
-  const user = useAppSelector((state) => state.user);
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
+  const favorites = []; // FIXME: Получить данные из стора
+  const user = useAppSelector(getUser);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   const navigate = useNavigate();

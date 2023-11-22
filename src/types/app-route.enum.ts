@@ -3,5 +3,4 @@ export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Offer = '/offer/:offerId',
-  NotFound = '/404'
 }

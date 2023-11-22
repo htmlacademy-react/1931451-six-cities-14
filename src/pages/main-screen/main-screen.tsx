@@ -4,11 +4,12 @@ import LocationsTabs from '../../components/locations-tabs/locations-tabs';
 import { Helmet } from 'react-helmet-async';
 import Cities from './cities/cities';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setActiveCity } from '../../store/action';
+import { getActiveCity, getOffers } from '../../store/slices/offers/selectors';
+import { setActiveCity } from '../../store/slices/offers/offers';
 
 export default function MainScreen(): JSX.Element {
-  const offers = useAppSelector((store) => store.offers);
-  const activeCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector(getOffers);
+  const activeCity = useAppSelector(getActiveCity);
   const dispatch = useAppDispatch();
 
   const filteredOffersByCity = offers.filter(
@@ -29,7 +30,7 @@ export default function MainScreen(): JSX.Element {
       >
         <LocationsTabs
           activeCity={activeCity}
-          onActiveCity={(city) => dispatch(setActiveCity({ city }))}
+          onActiveCity={(city) => dispatch(setActiveCity(city))}
         />
 
         <h1 className="visually-hidden">Cities</h1>

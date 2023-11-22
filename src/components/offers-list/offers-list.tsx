@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { PreviewOfferType } from '../../types';
 import OfferCard from '../offer-card/offer-card';
 
@@ -6,9 +7,9 @@ type OffersListProps = {
   onActiveOffer: (offer: PreviewOfferType | null) => void;
 };
 
-export default function OffersList({
+function OffersList({
   offers,
-  onActiveOffer,
+  onActiveOffer
 }: OffersListProps): JSX.Element {
   return (
     <div className="cities__places-list places__list tabs__content">
@@ -23,3 +24,6 @@ export default function OffersList({
     </div>
   );
 }
+
+const OffersListMemo = memo(OffersList);
+export default OffersListMemo;

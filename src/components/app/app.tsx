@@ -11,10 +11,12 @@ import Spinner from '../spinner/spinner';
 import { checkAuthAction, fetchOffersAction } from '../../store/api-action';
 import { useEffect } from 'react';
 import { store } from '../../store';
+import { getAuthorizationStatus } from '../../store/slices/user/selectors';
+import { getOffersLoadingStatus } from '../../store/slices/offers/selectors';
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isOffersLoading = useAppSelector(getOffersLoadingStatus);
 
   useEffect(() => {
     store.dispatch(fetchOffersAction());

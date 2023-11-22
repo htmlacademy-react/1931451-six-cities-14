@@ -15,7 +15,7 @@ export const Map: React.FC<MapProps> = ({
   className,
   offers,
   activeOffer,
-  isNeedZoom,
+  isNeedZoom
 }) => {
   const { city } = offers[0];
   const mapRef = useRef<HTMLElement | null>(null);

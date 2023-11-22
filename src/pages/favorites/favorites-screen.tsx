@@ -2,11 +2,11 @@ import { Helmet } from 'react-helmet-async';
 import FavoritesList from './favorites-list/favorites-list';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
-import { useAppSelector } from '../../hooks';
 import { ZERO_OFFERS } from './favorites-screen.const';
+import { OfferType } from '../../types';
 
 export default function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector((store) => store.favorites);
+  const offers: OfferType[] = []; // FIXME: Добавить стор, временно передаю пустой массив
   const isEmpty = offers.length === ZERO_OFFERS;
 
   return (
