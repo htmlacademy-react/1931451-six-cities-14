@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+import { memo } from 'react';
 import classNames from 'classnames';
 import { PreviewOfferType } from '../../types';
 import {
@@ -6,29 +8,26 @@ import {
   setCapitalLetter,
 } from '../../utils/utils';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks';
-import { setActiveOffer } from '../../store/slices/offer/offer';
 
 type OfferCardProps = {
   offer: PreviewOfferType;
+  onActiveOffer?: (offer: PreviewOfferType | null) => void;
   className?: string;
-  isNeedUpdate?: boolean;
 };
 
-export default function OfferCard({
+function OfferCard({
   offer,
   className,
-  isNeedUpdate = true,
+  onActiveOffer
 }: OfferCardProps): JSX.Element {
-  const dispatch = useAppDispatch();
   const { isPremium, previewImage, price, rating, title, type, id } = offer;
   const path = getPathToOffer(id);
 
   return (
     <article
       className={classNames('place-card', className)}
-      onMouseEnter={() => isNeedUpdate && dispatch(setActiveOffer(offer))}
-      onMouseLeave={() => isNeedUpdate && dispatch(setActiveOffer(null))}
+      onMouseEnter={() => onActiveOffer?.(offer)}
+      onMouseLeave={() => onActiveOffer?.(null)}
     >
       {isPremium && (
         <div className="place-card__mark">
@@ -78,3 +77,5 @@ export default function OfferCard({
     </article>
   );
 }
+
+export default memo(OfferCard);

@@ -30,7 +30,7 @@ export const addPluralEnding = (count: number) => (count !== 1 ? 's' : '');
 export const getPathToOffer = (id: string) =>
   AppRoute.Offer.replace(':offerId', id);
 
-export const getSortedOffers = (arr: PreviewOfferType[], type: OffersSortMapType | null) => {
+export const sortingOffers = (arr: PreviewOfferType[], type: OffersSortMapType | null) => {
   switch (type) {
     case 'LowPrice':
       return [...arr].sort((a, b) => a.price - b.price);

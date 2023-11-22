@@ -1,30 +1,24 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../../const';
-import { OfferType, PreviewOfferType } from '../../../types';
+import { OfferType } from '../../../types';
 import { fetchOfferAction } from '../../api-action';
 
 type OfferStateType = {
   offer: OfferType | null;
   isOfferLoading: boolean;
-  activeOffer: PreviewOfferType | null;
 };
 
 const initialState: OfferStateType = {
   offer: null,
   isOfferLoading: false,
-  activeOffer: null,
 };
 
 export const offerSlice = createSlice({
   name: NameSpace.Offer,
   initialState,
   reducers: {
-    setActiveOffer: (state, { payload }: PayloadAction<PreviewOfferType | null>) => {
-      state.activeOffer = payload;
-    },
     dropOffer: (state) => {
       state.offer = null;
-      state.activeOffer = null;
     },
   },
   extraReducers: (builder) => {
@@ -34,7 +28,6 @@ export const offerSlice = createSlice({
       })
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
         state.offer = action.payload;
-        state.activeOffer = action.payload;
         state.isOfferLoading = false;
       })
       .addCase(fetchOfferAction.rejected, (state) => {
@@ -43,4 +36,4 @@ export const offerSlice = createSlice({
   },
 });
 
-export const { setActiveOffer, dropOffer } = offerSlice.actions;
+export const { dropOffer } = offerSlice.actions;

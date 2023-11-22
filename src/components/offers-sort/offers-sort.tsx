@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import styles from './offers-sort.module.css';
 import { OffersSortMap } from '../../const';
 import { OffersSortMapType } from '../../types';
@@ -8,9 +8,7 @@ type OffersSortProps = {
   onSortType: (type: OffersSortMapType) => void;
 };
 
-export default function OffersSort({
-  onSortType,
-}: OffersSortProps): JSX.Element {
+function OffersSort({ onSortType }: OffersSortProps): JSX.Element {
   const [isOpened, setIsOpened] = useState(false);
   const [activeOption, setActiveOption] = useState(OffersSortMap.Popular);
 
@@ -66,3 +64,6 @@ export default function OffersSort({
     </form>
   );
 }
+
+const OffersSortMemo = memo(OffersSort);
+export default OffersSortMemo;

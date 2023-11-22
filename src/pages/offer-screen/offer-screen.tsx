@@ -25,8 +25,9 @@ import { dropOffer } from '../../store/slices/offer/offer';
 import { dropReviews } from '../../store/slices/reviews/reviews';
 import { getNearPlaces } from '../../store/slices/near-places/selectors';
 import { dropNearPlaces } from '../../store/slices/near-places/near-places';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
-export default function OfferScreen(): JSX.Element | null {
+export default function OfferScreen(): JSX.Element {
   const { offerId } = useParams();
   const offers = useAppSelector(getOffers);
   const offer = useAppSelector(getOffer);
@@ -56,7 +57,7 @@ export default function OfferScreen(): JSX.Element | null {
   }
 
   if (!offer) {
-    return null;
+    return <NotFoundScreen />;
   }
 
   const {
@@ -170,6 +171,7 @@ export default function OfferScreen(): JSX.Element | null {
             className="offer__map"
             offers={offers}
             isNeedZoom
+            activeOffer={offer}
           />
         </section>
         <NearPlaces offers={nearPlaces} />

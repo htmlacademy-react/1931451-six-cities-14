@@ -63,7 +63,7 @@ export const fetchOfferAction = createAsyncThunk<
   OfferType,
   OfferType['id'],
   AsyncActionType
->(`${NameSpace.Offer}`, async (offerId, { extra: api }) => {
+>(`${NameSpace.Offer}/fetchOffer`, async (offerId, { extra: api }) => {
   const { data } = await api.get<OfferType>(`${APIRoute.Offers}/${offerId}`);
 
   return data;
@@ -73,7 +73,7 @@ export const fetchReviewsAction = createAsyncThunk<
   ReviewType[],
   OfferType['id'],
   AsyncActionType
->(`${NameSpace.Reviews}`, async (offerId, { extra: api }) => {
+>(`${NameSpace.Reviews}/fetchReviews`, async (offerId, { extra: api }) => {
   const { data } = await api.get<ReviewType[]>(
     `${APIRoute.Comments}/${offerId}`
   );
@@ -85,7 +85,7 @@ export const fetchAddReviewAction = createAsyncThunk<
   ReviewType,
   [OfferType['id'], ReviewShortType],
   AsyncActionType
->(`${NameSpace.Reviews}`, async ([offerId, formData], { extra: api }) => {
+>(`${NameSpace.Reviews}/postReview`, async ([offerId, formData], { extra: api }) => {
   const { data } = await api.post<ReviewType>(
     `${APIRoute.Comments}/${offerId}`,
     formData
@@ -98,7 +98,7 @@ export const fetchNearPlacesAction = createAsyncThunk<
   PreviewOfferType[],
   OfferType['id'],
   AsyncActionType
->(`${NameSpace.NearPlaces}`, async (offerId, { extra: api }) => {
+>(`${NameSpace.NearPlaces}/fetchNearPlaces`, async (offerId, { extra: api }) => {
   const { data } = await api.get<PreviewOfferType[]>(
     `${APIRoute.Offers}/${offerId}${APIRoute.NearPlaces}`
   );

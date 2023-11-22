@@ -43,10 +43,7 @@ export default function LoginScreen(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(loginAction(loginForm));
-
-    if (isLogged) {
-      navigate(state.from, { replace: true });
-    }
+    navigate(state.from, { replace: true });
   };
 
   return (
@@ -55,7 +52,7 @@ export default function LoginScreen(): JSX.Element {
         <title>6 Cities: Login</title>
       </Helmet>
       <Header isLoginScreen />
-      <ToastContainer />;
+      <ToastContainer />
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">

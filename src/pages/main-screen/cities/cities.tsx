@@ -2,15 +2,32 @@ import { OffersSortMapType, PreviewOfferType } from '../../../types';
 import { Map } from '../../../components/map/map';
 import OffersList from '../../../components/offers-list/offers-list';
 import OffersSort from '../../../components/offers-sort/offers-sort';
-import { useState } from 'react';
-import { addPluralEnding, getSortedOffers } from '../../../utils/utils';
+import { useCallback, useMemo, useState } from 'react';
+import { addPluralEnding, sortingOffers } from '../../../utils/utils';
 
 type CitiesProps = {
   offers: PreviewOfferType[];
 };
 
 export default function Cities({ offers }: CitiesProps): JSX.Element {
+  const [activeOffer, setActiveOffer] = useState<PreviewOfferType | null>(null);
   const [sortType, setSortType] = useState<OffersSortMapType | null>(null);
+
+  const handleSetSortType = useCallback(
+    (data: OffersSortMapType) => setSortType(data),
+    []
+  );
+
+  const handleSetActiveOffer = useCallback(
+    (offer: PreviewOfferType | null) => setActiveOffer(offer),
+    []
+  );
+
+  // TODO: Или лучше использовать createSelector
+  const sortedOffers = useMemo(
+    () => sortingOffers(offers, sortType),
+    [offers, sortType]
+  );
 
   return offers.length ? (
     <div className="cities">
@@ -18,15 +35,21 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">
-            {offers.length} place{addPluralEnding(offers.length)} to stay in {offers[0].city.name}
+            {offers.length} place{addPluralEnding(offers.length)} to stay in{' '}
+            {offers[0].city.name}
           </b>
-          <OffersSort onSortType={(data: OffersSortMapType) => setSortType(data)} />
+          <OffersSort onSortType={handleSetSortType} />
           <OffersList
-            offers={getSortedOffers(offers, sortType)}
+            offers={sortedOffers}
+            onActiveOffer={handleSetActiveOffer}
           />
         </section>
         <div className="cities__right-section">
-          <Map className="cities__map" offers={offers} />
+          <Map
+            className="cities__map"
+            offers={offers}
+            activeOffer={activeOffer}
+          />
         </div>
       </div>
     </div>
