@@ -30,7 +30,7 @@ export default function LoginScreen(): JSX.Element {
   });
 
   if (isLogged) {
-    return <Navigate to={AppRoute.Main} />;
+    return state ? <Navigate to={state.from} replace /> : <Navigate to={AppRoute.Main} />;
   }
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +43,10 @@ export default function LoginScreen(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(loginAction(loginForm));
-    navigate(state.from, { replace: true });
+
+    if (isLogged) {
+      navigate(state.from, { replace: true });
+    }
   };
 
   return (
