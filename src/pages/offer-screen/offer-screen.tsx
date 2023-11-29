@@ -10,7 +10,7 @@ import { Map } from '../../components/map/map';
 import NearPlaces from '../../components/near-places/near-places';
 import { Helmet } from 'react-helmet-async';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector, useBookmarkToggle } from '../../hooks';
 import Spinner from '../../components/spinner/spinner';
 import { useEffect } from 'react';
 import {
@@ -39,6 +39,7 @@ export default function OfferScreen(): JSX.Element {
   const reviews = useAppSelector(getReviews);
   const nearPlaces = useAppSelector(getNearPlaces);
   const dispatch = useAppDispatch();
+  const {handleBookmarkToggle} = useBookmarkToggle(offer?.id || '', offer?.isFavorite || false);
 
   useEffect(() => {
     if (!offerId) {
@@ -114,6 +115,7 @@ export default function OfferScreen(): JSX.Element {
                     'offer__bookmark-button--active': isFavorite,
                   })}
                   type="button"
+                  onClick={handleBookmarkToggle}
                 >
                   <svg className="offer__bookmark-icon" width={31} height={33}>
                     <use xlinkHref="#icon-bookmark" />
@@ -158,7 +160,14 @@ export default function OfferScreen(): JSX.Element {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div
+                    className={classNames(
+                      'offer__avatar-wrapper user__avatar-wrapper',
+                      {
+                        'offer__avatar-wrapper--pro': isPro,
+                      }
+                    )}
+                  >
                     <img
                       className="offer__avatar user__avatar"
                       src={avatarUrl}

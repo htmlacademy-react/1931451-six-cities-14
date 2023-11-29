@@ -8,7 +8,7 @@ type OffersSortProps = {
   onSortType: (type: OffersSortMapType) => void;
 };
 
-function OffersSort({ onSortType }: OffersSortProps): JSX.Element {
+function OffersSortComponent({ onSortType }: OffersSortProps): JSX.Element {
   const [isOpened, setIsOpened] = useState(false);
   const [activeOption, setActiveOption] = useState(OffersSortMap.Popular);
 
@@ -65,5 +65,5 @@ function OffersSort({ onSortType }: OffersSortProps): JSX.Element {
   );
 }
 
-const OffersSortMemo = memo(OffersSort);
-export default OffersSortMemo;
+const OffersSort = memo(OffersSortComponent);
+export default OffersSort;

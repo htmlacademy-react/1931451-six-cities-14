@@ -70,7 +70,7 @@ export const loginAction = createAsyncThunk<
     password,
   });
   const { token } = data;
-  saveToken(token); //TODO: Стоит ли перенести сохранение токена в slice?
+  saveToken(token);
 
   return data;
 });
@@ -79,7 +79,7 @@ export const logoutAction = createAsyncThunk<void, undefined, AsyncActionType>(
   `${NameSpace.User}/logout`,
   async (_arg, { extra: api }) => {
     await api.delete(APIRoute.Logout);
-    dropToken(); //TODO: Стоит ли перенести сохранение токена в slice?
+    dropToken();
   }
 );
 

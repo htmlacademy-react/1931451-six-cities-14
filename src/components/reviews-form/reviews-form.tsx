@@ -8,8 +8,10 @@ import {
   ratings,
 } from './reviews-form.const';
 import { OfferType } from '../../types';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchAddReviewAction } from '../../store/api-action';
+import { getReviewAddedStatus, getSendReviewStatus } from '../../store/slices/reviews/selectors';
+import { ToastContainer } from 'react-toastify';
 
 type ReviewsFormProps = {
   offerId?: OfferType['id'];
@@ -19,7 +21,8 @@ export default function ReviewsForm({
   offerId,
 }: ReviewsFormProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const [isFormDisabled, setIsFormDisabled] = useState(false);
+  const isSendReview = useAppSelector(getSendReviewStatus);
+  const isReviewAdded = useAppSelector(getReviewAddedStatus);
   const [reviewForm, setReviewForm] = useState({
     [ReviewFormFields.Comment]: '',
     [ReviewFormFields.Rating]: RATING_NOT_SELECTED,
@@ -31,9 +34,10 @@ export default function ReviewsForm({
       MAX_COMMENT_LENGTH &&
     reviewForm.rating !== RATING_NOT_SELECTED;
 
+  const disabledButton = !isValid || isSendReview;
+
   const resetForm = () => {
     setReviewForm({ comment: '', rating: RATING_NOT_SELECTED });
-    setIsFormDisabled(false);
   };
 
   const handleChange = ({
@@ -57,13 +61,14 @@ export default function ReviewsForm({
       return;
     }
 
-    setIsFormDisabled(true);
 
     if (offerId) {
       dispatch(fetchAddReviewAction([offerId, reviewForm]));
     }
 
-    resetForm();
+    if (isReviewAdded) {
+      resetForm();
+    }
   };
 
   return (
@@ -73,6 +78,7 @@ export default function ReviewsForm({
       method="post"
       onSubmit={handleSubmit}
     >
+      <ToastContainer />
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -89,7 +95,7 @@ export default function ReviewsForm({
                 type="radio"
                 onChange={handleChange}
                 checked={reviewForm.rating === item}
-                disabled={isFormDisabled}
+                disabled={isSendReview}
               />
               <label
                 htmlFor={`${item}-stars`}
@@ -110,7 +116,7 @@ export default function ReviewsForm({
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={reviewForm.comment}
         onChange={handleChange}
-        disabled={isFormDisabled}
+        disabled={isSendReview}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -126,9 +132,9 @@ export default function ReviewsForm({
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={!isValid}
+          disabled={disabledButton}
         >
-          {isFormDisabled ? 'Send' : 'Submit'}
+          {isSendReview ? 'Send' : 'Submit'}
         </button>
       </div>
     </form>

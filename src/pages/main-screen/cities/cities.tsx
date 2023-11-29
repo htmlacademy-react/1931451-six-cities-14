@@ -26,7 +26,6 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
     []
   );
 
-  // TODO: Или лучше использовать createSelector
   const sortedOffers = useMemo(
     () => sortingOffers(offers, sortType),
     [offers, sortType]

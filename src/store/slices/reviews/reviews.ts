@@ -5,10 +5,14 @@ import { fetchAddReviewAction, fetchReviewsAction } from '../../api-action';
 
 type ReviewsStateType = {
   reviews: ReviewType[];
+  isSendReview: boolean;
+  isReviewAdded: boolean;
 }
 
 const initialState: ReviewsStateType = {
   reviews: [],
+  isSendReview: false,
+  isReviewAdded: false
 };
 
 export const reviewsSlice = createSlice({
@@ -24,8 +28,18 @@ export const reviewsSlice = createSlice({
       .addCase(fetchReviewsAction.fulfilled, (state, action) => {
         state.reviews = action.payload;
       })
+      .addCase(fetchAddReviewAction.pending, (state) => {
+        state.isSendReview = true;
+      })
       .addCase(fetchAddReviewAction.fulfilled, (state, action) => {
         state.reviews.push(action.payload);
+        state.isReviewAdded = true;
+        state.isSendReview = false;
+
+      })
+      .addCase(fetchAddReviewAction.rejected, (state) => {
+        state.isReviewAdded = false;
+        state.isSendReview = false;
       });
   }
 });

@@ -1,17 +1,13 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import classNames from 'classnames';
 import { PreviewOfferType } from '../../types';
 import {
-  debounce,
   getPathToOffer,
   getPercentRating,
   setCapitalLetter,
 } from '../../utils/utils';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchChangeFavoriteStatusAction } from '../../store/api-action';
-import { isNeedBookmarkUpdateStatus } from '../../store/slices/favorites/selectors';
-import { setFavorite } from '../../store/slices/offers/offers';
+import { useBookmarkToggle } from '../../hooks';
 
 type OfferCardType = 'favorites' | 'cities';
 
@@ -26,7 +22,7 @@ const imageSizeMap: Record<OfferCardType, { width: string; height: string }> = {
   cities: { width: '260', height: '200' },
 };
 
-function OfferCard({
+function OfferCardComponent({
   offer,
   onActiveOffer,
   className,
@@ -41,24 +37,11 @@ function OfferCard({
     id,
     isFavorite,
   } = offer;
-  const [isBookmarkActive, setBookmarkActive] = useState(isFavorite);
-  const dispatch = useAppDispatch();
-  const isNeedBookmarkUpdate = useAppSelector(isNeedBookmarkUpdateStatus);
   const path = getPathToOffer(id);
-
-  const handleBookmarkButtonClick = debounce(() => {
-    dispatch(
-      fetchChangeFavoriteStatusAction({
-        offerId: id,
-        status: Number(!isBookmarkActive),
-      })
-    );
-
-    if (isNeedBookmarkUpdate) {
-      dispatch(setFavorite(id));
-      setBookmarkActive((prev) => !prev);
-    }
-  });
+  const { handleBookmarkToggle, isBookmarkActive } = useBookmarkToggle(
+    id,
+    isFavorite
+  );
 
   return (
     <article
@@ -92,7 +75,7 @@ function OfferCard({
               'place-card__bookmark-button--active': isBookmarkActive,
             })}
             type="button"
-            onClick={handleBookmarkButtonClick}
+            onClick={handleBookmarkToggle}
             onMouseOut={(evt) => evt.currentTarget.blur()}
           >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
@@ -116,5 +99,5 @@ function OfferCard({
   );
 }
 
-const OfferCardMemo = memo(OfferCard);
-export default OfferCardMemo;
+const OfferCard = memo(OfferCardComponent);
+export default OfferCard;
