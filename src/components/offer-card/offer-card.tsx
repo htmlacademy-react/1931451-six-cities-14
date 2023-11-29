@@ -8,8 +8,10 @@ import {
   setCapitalLetter,
 } from '../../utils/utils';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchChangeFavoriteStatusAction } from '../../store/api-action';
+import { isNeedBookmarkUpdateStatus } from '../../store/slices/favorites/selectors';
+import { setFavorite } from '../../store/slices/offers/offers';
 
 type OfferCardType = 'favorites' | 'cities';
 
@@ -41,6 +43,7 @@ function OfferCard({
   } = offer;
   const [isBookmarkActive, setBookmarkActive] = useState(isFavorite);
   const dispatch = useAppDispatch();
+  const isNeedBookmarkUpdate = useAppSelector(isNeedBookmarkUpdateStatus);
   const path = getPathToOffer(id);
 
   const handleBookmarkButtonClick = debounce(() => {
@@ -51,7 +54,10 @@ function OfferCard({
       })
     );
 
-    setBookmarkActive((prev) => !prev);
+    if (isNeedBookmarkUpdate) {
+      dispatch(setFavorite(id));
+      setBookmarkActive((prev) => !prev);
+    }
   });
 
   return (

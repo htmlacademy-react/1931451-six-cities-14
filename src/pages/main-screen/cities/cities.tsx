@@ -4,6 +4,9 @@ import OffersList from '../../../components/offers-list/offers-list';
 import OffersSort from '../../../components/offers-sort/offers-sort';
 import { useCallback, useMemo, useState } from 'react';
 import { addPluralEnding, sortingOffers } from '../../../utils/utils';
+import { fetchOffersAction } from '../../../store/api-action';
+import { store } from '../../../store';
+import styles from './cities.module.css';
 
 type CitiesProps = {
   offers: PreviewOfferType[];
@@ -62,6 +65,15 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
             <p className="cities__status-description">
               We could not find any property available at the moment in Paris
             </p>
+            <button
+              className={styles.button}
+              tabIndex={0}
+              onClick={() => {
+                store.dispatch(fetchOffersAction());
+              }}
+            >
+              Try Again
+            </button>
           </div>
         </section>
         <div className="cities__right-section" />

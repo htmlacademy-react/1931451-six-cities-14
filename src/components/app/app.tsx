@@ -58,3 +58,6 @@ function App(): JSX.Element {
 }
 
 export default App;
+
+
+// FIXME: Пофиксить поведение, когда нет предложений, но отображдается избранное
