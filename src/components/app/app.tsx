@@ -58,6 +58,3 @@ function App(): JSX.Element {
 }
 
 export default App;
-
-
-// TODO: Пофиксить поведение, когда нет предложений, но отображается избранное ?

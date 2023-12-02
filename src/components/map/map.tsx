@@ -17,7 +17,7 @@ export const Map: React.FC<MapProps> = ({
   activeOffer,
   isNeedZoom
 }) => {
-  const { city } = offers[0];
+  const { city } = offers[0] ?? activeOffer;
   const mapRef = useRef<HTMLElement | null>(null);
   const map = useMapWithPoints(mapRef, city, offers, activeOffer);
 

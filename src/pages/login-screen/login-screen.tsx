@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { AppRoute } from '../../types';
 import { checkAuthorizationStatus, setCapitalLetter } from '../../utils/utils';
 import { ChangeEvent, FormEvent, useState } from 'react';
@@ -20,8 +20,6 @@ export default function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
-
-  const navigate = useNavigate();
   const { state } = useLocation() as LocationType;
 
   const [loginForm, setLoginForm] = useState({
@@ -43,10 +41,6 @@ export default function LoginScreen(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(loginAction(loginForm));
-
-    if (isLogged) {
-      navigate(state.from, { replace: true });
-    }
   };
 
   return (

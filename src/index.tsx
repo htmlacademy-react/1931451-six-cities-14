@@ -25,6 +25,3 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
-
-// FIXME: Удалить версию ноды
-// v18.17.1

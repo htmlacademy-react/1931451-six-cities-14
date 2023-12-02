@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import { memo, useState } from 'react';
 import styles from './offers-sort.module.css';
-import { OffersSortMap } from '../../const';
+import { OffersSortMap, SORT_PARAM_NAME } from '../../const';
 import { OffersSortMapType } from '../../types';
+import { useSearchParams } from 'react-router-dom';
 
 type OffersSortProps = {
   onSortType: (type: OffersSortMapType) => void;
@@ -10,7 +11,13 @@ type OffersSortProps = {
 
 function OffersSortComponent({ onSortType }: OffersSortProps): JSX.Element {
   const [isOpened, setIsOpened] = useState(false);
-  const [activeOption, setActiveOption] = useState(OffersSortMap.Popular);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sortParam = Object.keys(OffersSortMap).find(
+    (key) => key === searchParams.get(SORT_PARAM_NAME)
+  )
+    ? searchParams.get(SORT_PARAM_NAME)
+    : null;
+  const [activeOption, setActiveOption] = useState(sortParam ?? OffersSortMap.Popular);
 
   return (
     <form
@@ -54,6 +61,10 @@ function OffersSortComponent({ onSortType }: OffersSortProps): JSX.Element {
             key={value}
             onClick={() => {
               setActiveOption(value);
+              setSearchParams((params) => {
+                params.set(SORT_PARAM_NAME, type);
+                return params;
+              });
               onSortType(type as OffersSortMapType);
             }}
           >

@@ -10,7 +10,7 @@ import { Map } from '../../components/map/map';
 import NearPlaces from '../../components/near-places/near-places';
 import { Helmet } from 'react-helmet-async';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import { useAppDispatch, useAppSelector, useBookmarkToggle } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import Spinner from '../../components/spinner/spinner';
 import { useEffect } from 'react';
 import {
@@ -18,7 +18,6 @@ import {
   fetchOfferAction,
   fetchReviewsAction,
 } from '../../store/api-action';
-import { getOffers } from '../../store/slices/offers/selectors';
 import {
   getOffer,
   getOfferLoadingStatus,
@@ -30,16 +29,16 @@ import { getNearPlaces } from '../../store/slices/near-places/selectors';
 import { dropNearPlaces } from '../../store/slices/near-places/near-places';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import classNames from 'classnames';
+import ButtonFavorite from '../../components/button-favorite/button-favorite';
+import { MAX_NEAR_PLACES_COUNT, MIN_NEAR_PLACES_COUNT } from '../../components/near-places/near-places.const';
 
 export default function OfferScreen(): JSX.Element {
   const { offerId } = useParams();
-  const offers = useAppSelector(getOffers);
   const offer = useAppSelector(getOffer);
   const isOfferLoading = useAppSelector(getOfferLoadingStatus);
   const reviews = useAppSelector(getReviews);
-  const nearPlaces = useAppSelector(getNearPlaces);
+  const nearPlaces = useAppSelector(getNearPlaces).slice(MIN_NEAR_PLACES_COUNT, MAX_NEAR_PLACES_COUNT);
   const dispatch = useAppDispatch();
-  const {handleBookmarkToggle} = useBookmarkToggle(offer?.id || '', offer?.isFavorite || false);
 
   useEffect(() => {
     if (!offerId) {
@@ -76,7 +75,8 @@ export default function OfferScreen(): JSX.Element {
     price,
     goods,
     description,
-    isFavorite
+    isFavorite,
+    id
   } = offer;
 
   const { avatarUrl, name, isPro } = offer.host;
@@ -110,18 +110,7 @@ export default function OfferScreen(): JSX.Element {
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{title}</h1>
-                <button
-                  className={classNames('offer__bookmark-button button', {
-                    'offer__bookmark-button--active': isFavorite,
-                  })}
-                  type="button"
-                  onClick={handleBookmarkToggle}
-                >
-                  <svg className="offer__bookmark-icon" width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <ButtonFavorite className='offer' id={id} isFavorite={isFavorite} />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
@@ -188,7 +177,7 @@ export default function OfferScreen(): JSX.Element {
           </div>
           <Map
             className="offer__map"
-            offers={offers}
+            offers={nearPlaces}
             isNeedZoom
             activeOffer={offer}
           />

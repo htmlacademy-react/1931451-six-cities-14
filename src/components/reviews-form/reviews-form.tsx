@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
+import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import { MAX_RATING } from '../../const';
 import {
   MAX_COMMENT_LENGTH,
@@ -10,7 +10,10 @@ import {
 import { OfferType } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchAddReviewAction } from '../../store/api-action';
-import { getReviewAddedStatus, getSendReviewStatus } from '../../store/slices/reviews/selectors';
+import {
+  getReviewAddedSucessStatus,
+  getReviewSendingStatus,
+} from '../../store/slices/reviews/selectors';
 import { ToastContainer } from 'react-toastify';
 
 type ReviewsFormProps = {
@@ -21,12 +24,19 @@ export default function ReviewsForm({
   offerId,
 }: ReviewsFormProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const isSendReview = useAppSelector(getSendReviewStatus);
-  const isReviewAdded = useAppSelector(getReviewAddedStatus);
+  const isReviewSending = useAppSelector(getReviewSendingStatus);
+  const isReviewAddedSuccess = useAppSelector(getReviewAddedSucessStatus);
   const [reviewForm, setReviewForm] = useState({
     [ReviewFormFields.Comment]: '',
     [ReviewFormFields.Rating]: RATING_NOT_SELECTED,
   });
+
+  useEffect(() => {
+    if (isReviewAddedSuccess) {
+      setReviewForm({ comment: '', rating: RATING_NOT_SELECTED });
+    }
+  }, [isReviewAddedSuccess]);
+
   const isValid =
     reviewForm.comment.replace(/\s/g, ' ').trim().length >=
       MIN_COMMENT_LENGTH &&
@@ -34,11 +44,7 @@ export default function ReviewsForm({
       MAX_COMMENT_LENGTH &&
     reviewForm.rating !== RATING_NOT_SELECTED;
 
-  const disabledButton = !isValid || isSendReview;
-
-  const resetForm = () => {
-    setReviewForm({ comment: '', rating: RATING_NOT_SELECTED });
-  };
+  const disabledButton = !isValid || isReviewSending;
 
   const handleChange = ({
     target,
@@ -61,13 +67,8 @@ export default function ReviewsForm({
       return;
     }
 
-
     if (offerId) {
       dispatch(fetchAddReviewAction([offerId, reviewForm]));
-    }
-
-    if (isReviewAdded) {
-      resetForm();
     }
   };
 
@@ -95,7 +96,7 @@ export default function ReviewsForm({
                 type="radio"
                 onChange={handleChange}
                 checked={reviewForm.rating === item}
-                disabled={isSendReview}
+                disabled={isReviewSending}
               />
               <label
                 htmlFor={`${item}-stars`}
@@ -116,7 +117,7 @@ export default function ReviewsForm({
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={reviewForm.comment}
         onChange={handleChange}
-        disabled={isSendReview}
+        disabled={isReviewSending}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -134,7 +135,7 @@ export default function ReviewsForm({
           type="submit"
           disabled={disabledButton}
         >
-          {isSendReview ? 'Send' : 'Submit'}
+          {isReviewSending ? 'Send' : 'Submit'}
         </button>
       </div>
     </form>

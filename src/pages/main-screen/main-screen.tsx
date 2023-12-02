@@ -6,14 +6,26 @@ import Cities from './cities/cities';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getActiveCity, getOffers } from '../../store/slices/offers/selectors';
 import { setActiveCity } from '../../store/slices/offers/offers';
+import { useMemo } from 'react';
+import { CITY_NAMES, CITY_PARAM_NAME } from '../../const';
+import { useSearchParams } from 'react-router-dom';
+import { CityNamesType } from '../../types';
 
 export default function MainScreen(): JSX.Element {
   const offers = useAppSelector(getOffers);
-  const activeCity = useAppSelector(getActiveCity);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeCityState = useAppSelector(getActiveCity);
   const dispatch = useAppDispatch();
+  const sortParam = CITY_NAMES.find(
+    (city) => city === searchParams.get(CITY_PARAM_NAME)
+  )
+    ? searchParams.get(CITY_PARAM_NAME)
+    : null;
+  const activeCity = sortParam ?? activeCityState;
 
-  const filteredOffersByCity = offers.filter(
-    (offer) => offer.city.name === activeCity
+  const filteredOffersByCity = useMemo(
+    () => offers.filter((offer) => offer.city.name === activeCity),
+    [activeCity, offers]
   );
 
   return (
@@ -29,8 +41,14 @@ export default function MainScreen(): JSX.Element {
         })}
       >
         <LocationsTabs
-          activeCity={activeCity}
-          onActiveCity={(city) => dispatch(setActiveCity(city))}
+          activeCity={activeCity as CityNamesType}
+          onActiveCity={(city) => {
+            dispatch(setActiveCity(city));
+            setSearchParams((params) => {
+              params.set(CITY_PARAM_NAME, city);
+              return params;
+            });
+          }}
         />
 
         <h1 className="visually-hidden">Cities</h1>

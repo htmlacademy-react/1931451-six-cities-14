@@ -7,7 +7,7 @@ import {
   setCapitalLetter,
 } from '../../utils/utils';
 import { Link } from 'react-router-dom';
-import { useBookmarkToggle } from '../../hooks';
+import ButtonFavorite from '../button-favorite/button-favorite';
 
 type OfferCardType = 'favorites' | 'cities';
 
@@ -38,10 +38,6 @@ function OfferCardComponent({
     isFavorite,
   } = offer;
   const path = getPathToOffer(id);
-  const { handleBookmarkToggle, isBookmarkActive } = useBookmarkToggle(
-    id,
-    isFavorite
-  );
 
   return (
     <article
@@ -70,23 +66,11 @@ function OfferCardComponent({
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button
-            className={classNames('place-card__bookmark-button button', {
-              'place-card__bookmark-button--active': isBookmarkActive,
-            })}
-            type="button"
-            onClick={handleBookmarkToggle}
-            onMouseOut={(evt) => evt.currentTarget.blur()}
-          >
-            <svg className="place-card__bookmark-icon" width={18} height={19}>
-              <use xlinkHref="#icon-bookmark" />
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <ButtonFavorite className='place-card' id={id} isFavorite={isFavorite} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: getPercentRating(rating) }} />
+            <span style={{ width: getPercentRating(rating) }} />\
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

@@ -58,10 +58,17 @@ export function useMapWithPoints(
 
       marker
         .setIcon(
-          activePoint?.id === point.id ? currentCustomIcon : defaultCustomIcon
+          defaultCustomIcon
         )
         .addTo(markerLayer);
     });
+
+    if (activePoint) {
+      new Marker({
+        lat: activePoint.location.latitude,
+        lng: activePoint.location.longitude,
+      }).setIcon(currentCustomIcon).addTo(markerLayer);
+    }
 
     return () => {
       map.removeLayer(markerLayer);
