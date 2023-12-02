@@ -4,6 +4,12 @@ import OffersList from '../../../components/offers-list/offers-list';
 import OffersSort from '../../../components/offers-sort/offers-sort';
 import { useCallback, useMemo, useState } from 'react';
 import { addPluralEnding, sortingOffers } from '../../../utils/utils';
+import { fetchOffersAction } from '../../../store/api-action';
+import { store } from '../../../store';
+import styles from './cities.module.css';
+import { useSearchParams } from 'react-router-dom';
+import { SORT_PARAM_NAME } from '../../../const';
+
 
 type CitiesProps = {
   offers: PreviewOfferType[];
@@ -11,7 +17,9 @@ type CitiesProps = {
 
 export default function Cities({ offers }: CitiesProps): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<PreviewOfferType | null>(null);
-  const [sortType, setSortType] = useState<OffersSortMapType | null>(null);
+  const [sortParams] = useSearchParams();
+  const defaultSortType = sortParams.get(SORT_PARAM_NAME) as OffersSortMapType ?? null;
+  const [sortType, setSortType] = useState<OffersSortMapType | null>(defaultSortType);
 
   const handleSetSortType = useCallback(
     (data: OffersSortMapType) => setSortType(data),
@@ -23,7 +31,6 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
     []
   );
 
-  // TODO: Или лучше использовать createSelector
   const sortedOffers = useMemo(
     () => sortingOffers(offers, sortType),
     [offers, sortType]
@@ -62,6 +69,15 @@ export default function Cities({ offers }: CitiesProps): JSX.Element {
             <p className="cities__status-description">
               We could not find any property available at the moment in Paris
             </p>
+            <button
+              className={styles.button}
+              tabIndex={0}
+              onClick={() => {
+                store.dispatch(fetchOffersAction());
+              }}
+            >
+              Try Again
+            </button>
           </div>
         </section>
         <div className="cities__right-section" />

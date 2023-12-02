@@ -6,14 +6,15 @@ import styles from './header.module.css';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-action';
 import { getAuthorizationStatus, getUser } from '../../store/slices/user/selectors';
+import { getFavorites } from '../../store/slices/favorites/selectors';
 
 type HeaderProps = {
   isLoginScreen?: boolean;
 };
 
 export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
-  const favorites = []; // FIXME: Получить данные из стора
   const user = useAppSelector(getUser);
+  const favorites = useAppSelector(getFavorites);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();

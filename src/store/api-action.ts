@@ -26,6 +26,30 @@ export const fetchOffersAction = createAsyncThunk<
   return data;
 });
 
+export const fetchFavoritesAction = createAsyncThunk<
+  PreviewOfferType[],
+  undefined,
+  AsyncActionType
+>(`${NameSpace.Favorites}/fetchFavorites`, async (_arg, { extra: api }) => {
+  const { data } = await api.get<PreviewOfferType[]>(APIRoute.Favorite);
+
+  return data;
+});
+
+export const fetchChangeFavoriteStatusAction = createAsyncThunk<
+  PreviewOfferType,
+  { offerId: OfferType['id']; status: number },
+  AsyncActionType
+>(
+  `${NameSpace.Favorites}/postFavoriteStatus`,
+  async ({ offerId, status }, { extra: api }) => {
+    const secondString = `${APIRoute.Favorite}/${offerId}/${status}`;
+    const { data } = await api.post<PreviewOfferType>(secondString);
+
+    return data;
+  }
+);
+
 export const checkAuthAction = createAsyncThunk<
   UserType,
   undefined,
@@ -46,7 +70,7 @@ export const loginAction = createAsyncThunk<
     password,
   });
   const { token } = data;
-  saveToken(token); //TODO: Стоит ли перенести сохранение токена в slice?
+  saveToken(token);
 
   return data;
 });
@@ -55,7 +79,7 @@ export const logoutAction = createAsyncThunk<void, undefined, AsyncActionType>(
   `${NameSpace.User}/logout`,
   async (_arg, { extra: api }) => {
     await api.delete(APIRoute.Logout);
-    dropToken(); //TODO: Стоит ли перенести сохранение токена в slice?
+    dropToken();
   }
 );
 
@@ -85,23 +109,29 @@ export const fetchAddReviewAction = createAsyncThunk<
   ReviewType,
   [OfferType['id'], ReviewShortType],
   AsyncActionType
->(`${NameSpace.Reviews}/postReview`, async ([offerId, formData], { extra: api }) => {
-  const { data } = await api.post<ReviewType>(
-    `${APIRoute.Comments}/${offerId}`,
-    formData
-  );
+>(
+  `${NameSpace.Reviews}/postReview`,
+  async ([offerId, formData], { extra: api }) => {
+    const { data } = await api.post<ReviewType>(
+      `${APIRoute.Comments}/${offerId}`,
+      formData
+    );
 
-  return data;
-});
+    return data;
+  }
+);
 
 export const fetchNearPlacesAction = createAsyncThunk<
   PreviewOfferType[],
   OfferType['id'],
   AsyncActionType
->(`${NameSpace.NearPlaces}/fetchNearPlaces`, async (offerId, { extra: api }) => {
-  const { data } = await api.get<PreviewOfferType[]>(
-    `${APIRoute.Offers}/${offerId}${APIRoute.NearPlaces}`
-  );
+>(
+  `${NameSpace.NearPlaces}/fetchNearPlaces`,
+  async (offerId, { extra: api }) => {
+    const { data } = await api.get<PreviewOfferType[]>(
+      `${APIRoute.Offers}/${offerId}${APIRoute.NearPlaces}`
+    );
 
-  return data;
-});
+    return data;
+  }
+);

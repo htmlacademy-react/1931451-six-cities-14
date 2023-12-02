@@ -7,7 +7,7 @@ type OffersListProps = {
   onActiveOffer: (offer: PreviewOfferType | null) => void;
 };
 
-function OffersList({
+function OffersListComponent({
   offers,
   onActiveOffer
 }: OffersListProps): JSX.Element {
@@ -18,12 +18,12 @@ function OffersList({
           onActiveOffer={onActiveOffer}
           offer={offer}
           key={offer.id}
-          className="cities__card"
+          className='cities'
         />
       ))}
     </div>
   );
 }
 
-const OffersListMemo = memo(OffersList);
-export default OffersListMemo;
+const OffersList = memo(OffersListComponent);
+export default OffersList;

@@ -7,24 +7,41 @@ import {
   setCapitalLetter,
 } from '../../utils/utils';
 import { Link } from 'react-router-dom';
+import ButtonFavorite from '../button-favorite/button-favorite';
+
+type OfferCardType = 'favorites' | 'cities';
 
 type OfferCardProps = {
   offer: PreviewOfferType;
   onActiveOffer?: (offer: PreviewOfferType | null) => void;
-  className?: string;
+  className: OfferCardType;
 };
 
-function OfferCard({
+const imageSizeMap: Record<OfferCardType, { width: string; height: string }> = {
+  favorites: { width: '150', height: '110' },
+  cities: { width: '260', height: '200' },
+};
+
+function OfferCardComponent({
   offer,
+  onActiveOffer,
   className,
-  onActiveOffer
 }: OfferCardProps): JSX.Element {
-  const { isPremium, previewImage, price, rating, title, type, id } = offer;
+  const {
+    isPremium,
+    previewImage,
+    price,
+    rating,
+    title,
+    type,
+    id,
+    isFavorite,
+  } = offer;
   const path = getPathToOffer(id);
 
   return (
     <article
-      className={classNames('place-card', className)}
+      className={classNames('place-card', `${className}__card`)}
       onMouseEnter={() => onActiveOffer?.(offer)}
       onMouseLeave={() => onActiveOffer?.(null)}
     >
@@ -33,38 +50,27 @@ function OfferCard({
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`place-card__image-wrapper ${className}__image-wrapper`}>
         <Link to={path}>
           <img
             className="place-card__image"
             src={previewImage}
-            width={260}
-            height={200}
             alt={title}
+            {...imageSizeMap[className]}
           />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={`place-card__info ${className}-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button
-            className={classNames('place-card__bookmark-button button', {
-              'place-card__bookmark-button--active': offer.isFavorite,
-            })}
-            type="button"
-          >
-            <svg className="place-card__bookmark-icon" width={18} height={19}>
-              <use xlinkHref="#icon-bookmark" />
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <ButtonFavorite className='place-card' id={id} isFavorite={isFavorite} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: getPercentRating(rating) }} />
+            <span style={{ width: getPercentRating(rating) }} />\
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -77,5 +83,5 @@ function OfferCard({
   );
 }
 
-const OfferCardMemo = memo(OfferCard);
-export default OfferCardMemo;
+const OfferCard = memo(OfferCardComponent);
+export default OfferCard;

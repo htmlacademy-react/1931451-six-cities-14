@@ -3,6 +3,9 @@ export const MAX_PERCENT = 100;
 export const PRIVATE_ROUTES: readonly string[] = ['/favorites'];
 export const CITY_NAMES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 export const DEFAULT_CITY_NAME = CITY_NAMES[0];
+export const DEBOUNCE_INTERVAL = 200;
+export const SORT_PARAM_NAME = 'sorting';
+export const CITY_PARAM_NAME = 'city';
 
 export const OffersSortMap = {
   Popular: 'Popular',

@@ -3,11 +3,12 @@ import FavoritesList from './favorites-list/favorites-list';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { ZERO_OFFERS } from './favorites-screen.const';
-import { OfferType } from '../../types';
+import { useAppSelector } from '../../hooks';
+import { getFavorites } from '../../store/slices/favorites/selectors';
 
 export default function FavoritesScreen(): JSX.Element {
-  const offers: OfferType[] = []; // FIXME: Добавить стор, временно передаю пустой массив
-  const isEmpty = offers.length === ZERO_OFFERS;
+  const favorites = useAppSelector(getFavorites);
+  const isEmpty = favorites.length === ZERO_OFFERS;
 
   return (
     <>
@@ -36,7 +37,7 @@ export default function FavoritesScreen(): JSX.Element {
           <div className="page__favorites-container container">
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
-              <FavoritesList offers={offers} />
+              <FavoritesList offers={favorites} />
             </section>
           </div>
         </main>

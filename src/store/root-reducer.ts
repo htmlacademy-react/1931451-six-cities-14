@@ -5,6 +5,7 @@ import { offersSlice } from './slices/offers/offers';
 import { offerSlice } from './slices/offer/offer';
 import { reviewsSlice } from './slices/reviews/reviews';
 import { nearPlacesSlice } from './slices/near-places/near-places';
+import { favoritesSlice } from './slices/favorites/favorites';
 
 export const rootReducer = combineReducers({
   [NameSpace.Offers]: offersSlice.reducer,
@@ -12,4 +13,5 @@ export const rootReducer = combineReducers({
   [NameSpace.Offer]: offerSlice.reducer,
   [NameSpace.Reviews]: reviewsSlice.reducer,
   [NameSpace.NearPlaces]: nearPlacesSlice.reducer,
+  [NameSpace.Favorites]: favoritesSlice.reducer,
 });

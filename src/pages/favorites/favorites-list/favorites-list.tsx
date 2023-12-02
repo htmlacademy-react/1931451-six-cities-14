@@ -1,16 +1,19 @@
-import { CityNamesType, OfferType } from '../../../types';
-import FavoritesCard from '../favorites-card/favorites-card';
+import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../../hooks';
+import { setActiveCity } from '../../../store/slices/offers/offers';
+import { AppRoute, CityNamesType, PreviewOfferType } from '../../../types';
+import OfferCard from '../../../components/offer-card/offer-card';
 
 type FavoritesListProps = {
-  offers: OfferType[];
+  offers: PreviewOfferType[];
 };
 
-const getFavoritesByCity = (favorites: OfferType[]) => {
+const getFavoritesByCity = (favorites: PreviewOfferType[]) => {
   const favoritesSorted = favorites.toSorted((a, b) =>
     a.city.name > b.city.name ? 1 : -1
   );
 
-  return favoritesSorted.reduce<{ [key: string]: OfferType[] }>((acc, curr) => {
+  return favoritesSorted.reduce<{ [key: string]: PreviewOfferType[] }>((acc, curr) => {
     const city: CityNamesType = curr.city.name;
 
     if (!(city in acc)) {
@@ -26,6 +29,7 @@ const getFavoritesByCity = (favorites: OfferType[]) => {
 export default function FavoritesList({
   offers,
 }: FavoritesListProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const favoritesByCity = getFavoritesByCity(offers);
 
   return (
@@ -34,15 +38,18 @@ export default function FavoritesList({
         <li className="favorites__locations-items" key={city}>
           <div className="favorites__locations locations locations--current">
             <div className="locations__item">
-              {/* FIXME: Исправить тег а */}
-              <a className="locations__item-link" href="#">
+              <Link
+                className="locations__item-link"
+                onClick={() => dispatch(setActiveCity(city as CityNamesType))}
+                to={AppRoute.Main}
+              >
                 <span>{city}</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="favorites__places">
             {groupedFavorites.map((offer) => (
-              <FavoritesCard offer={offer} key={offer.id} />
+              <OfferCard offer={offer} key={offer.id} className='favorites' />
             ))}
           </div>
         </li>
