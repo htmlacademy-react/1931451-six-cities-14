@@ -1,7 +1,6 @@
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AppRoute } from '../../types';
 import { checkAuthorizationStatus } from '../../utils/utils';
-import { PRIVATE_ROUTES } from '../../const';
 import styles from './header.module.css';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-action';
@@ -18,7 +17,6 @@ export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const isLogged = checkAuthorizationStatus(authorizationStatus);
 
   const getStyleForNavLink = ({ isActive }: { isActive: boolean }): object =>
@@ -26,10 +24,6 @@ export default function Header({ isLoginScreen }: HeaderProps): JSX.Element {
 
   const handleClick = () => {
     dispatch(logoutAction());
-
-    if (PRIVATE_ROUTES.includes(pathname)) {
-      navigate(AppRoute.Main);
-    }
   };
 
   return (

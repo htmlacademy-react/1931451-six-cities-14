@@ -5,7 +5,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import HistoryRouter from './components/history-route/history-route';
+import HistoryRouter from './components/history-router/history-router';
 import browserHistory from './browser-history';
 
 
